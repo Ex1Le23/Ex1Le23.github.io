@@ -411,6 +411,68 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
@@ -450,12 +512,14 @@
         </header>
 
         <div class="post-content">
-            <p>#一、XSS 简介<br>XSS（Cross Site Scripting 跨站脚本攻击），指恶意攻击者通过向网站插入恶意payload或恶意脚本，从而盗取cookie、session信息以利用用户身份进行违规操作、盗取用户资料等等。<br>##常见XSS漏洞分类<br>反射型XSS<br>存储型XSS<br>DOM XSS<br>#二、XSS漏洞成因<br>###1、反射型XSS<br>网站对于用户提交的数据没有进行过滤或转义操作（或者过滤、转义不足），导致攻击者嵌入的恶意代码被提交给服务端，服务端解析后，在相应内容中返回输入的XSS代码，最终由浏览器解释执行。<br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220720101405662-787659899.png"><br>原型如下：<br><code>&lt;?php echo &#39;your input:&#39; . $_GET[&#39;input&#39;]; ?&gt;</code><br>####原理解析<br>若input为<code>&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code><br>且input值未经任何过滤便直接输出，则服务端解析后，echo语句会将客户端输入的代码<strong>完整地输出到HTTP响应中，浏览器解析并执行</strong>，如下图所示<br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220719220708564-422036808.png"><br>发生弹窗，说明payload被执行。<br>同理，也可以直接如下图所示构造url，当用户点击该url链接，攻击就发生了<br><code>http://localhost/dvwa/vulnerabilities/xss_r/?name=&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code><br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220720100024888-1599748353.png"><br>若将payload替换成恶意脚本，则在<strong>用户点击</strong>时，发生如上过程，浏览器解析并执行，达到攻击目的。</p>
-<p>###2、存储型XSS<br>反射型XSS每次皆需要用户提交代码（也即“点击”）才能进行攻击。而存储型XSS提交的XSS代码会<strong>存储在服务器端</strong>，下次请求该网页时无需再次提交XSS代码。常见的应用场景有留言板、在线聊天室、邮件服务等，当攻击者提交包含XSS代码的留言后，服务端会将其<strong>存储在数据库中</strong>，当其他用户访问网页查看留言时，服务端将从数据库中查询已有留言，并将其内容输出在HTTP响应中，由浏览器对包含恶意代码的响应解析并执行。<br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220720101613900-167556487.png"><br>原型如下：</p>
+            <h1 id="一、XSS-简介"><a href="#一、XSS-简介" class="headerlink" title="一、XSS 简介"></a>一、XSS 简介</h1><p>XSS（Cross Site Scripting 跨站脚本攻击），指恶意攻击者通过向网站插入恶意payload或恶意脚本，从而盗取cookie、session信息以利用用户身份进行违规操作、盗取用户资料等等。</p>
+<h2 id="常见XSS漏洞分类"><a href="#常见XSS漏洞分类" class="headerlink" title="常见XSS漏洞分类"></a>常见XSS漏洞分类</h2><p>反射型XSS<br>存储型XSS<br>DOM XSS</p>
+<h1 id="二、XSS漏洞成因"><a href="#二、XSS漏洞成因" class="headerlink" title="二、XSS漏洞成因"></a>二、XSS漏洞成因</h1><h3 id="1、反射型XSS"><a href="#1、反射型XSS" class="headerlink" title="1、反射型XSS"></a>1、反射型XSS</h3><p>网站对于用户提交的数据没有进行过滤或转义操作（或者过滤、转义不足），导致攻击者嵌入的恶意代码被提交给服务端，服务端解析后，在相应内容中返回输入的XSS代码，最终由浏览器解释执行。<br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220720101405662-787659899.png"><br>原型如下：<br><code>&lt;?php echo &#39;your input:&#39; . $_GET[&#39;input&#39;]; ?&gt;</code></p>
+<h4 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h4><p>若input为<code>&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code><br>且input值未经任何过滤便直接输出，则服务端解析后，echo语句会将客户端输入的代码<strong>完整地输出到HTTP响应中，浏览器解析并执行</strong>，如下图所示<br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220719220708564-422036808.png"><br>发生弹窗，说明payload被执行。<br>同理，也可以直接如下图所示构造url，当用户点击该url链接，攻击就发生了<br><code>http://localhost/dvwa/vulnerabilities/xss_r/?name=&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code><br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220720100024888-1599748353.png"><br>若将payload替换成恶意脚本，则在<strong>用户点击</strong>时，发生如上过程，浏览器解析并执行，达到攻击目的。</p>
+<h3 id="2、存储型XSS"><a href="#2、存储型XSS" class="headerlink" title="2、存储型XSS"></a>2、存储型XSS</h3><p>反射型XSS每次皆需要用户提交代码（也即“点击”）才能进行攻击。而存储型XSS提交的XSS代码会<strong>存储在服务器端</strong>，下次请求该网页时无需再次提交XSS代码。常见的应用场景有留言板、在线聊天室、邮件服务等，当攻击者提交包含XSS代码的留言后，服务端会将其<strong>存储在数据库中</strong>，当其他用户访问网页查看留言时，服务端将从数据库中查询已有留言，并将其内容输出在HTTP响应中，由浏览器对包含恶意代码的响应解析并执行。<br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220720101613900-167556487.png"><br>原型如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;btnSign&#x27; ] ) ) &#123;</span><br><span class="line">    // Get input</span><br><span class="line">    $message = trim( $_POST[ &#x27;mtxMessage&#x27; ] );</span><br><span class="line">    $name    = trim( $_POST[ &#x27;txtName&#x27; ] );</span><br><span class="line"></span><br><span class="line">    // Sanitize message input</span><br><span class="line">    $message = stripslashes( $message );</span><br><span class="line">    $message = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $message ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Sanitize name input</span><br><span class="line">    $name = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $name ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Update database</span><br><span class="line">    $query  = &quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;$message&#x27;, &#x27;$name&#x27; );&quot;;</span><br><span class="line">    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &#x27;&lt;pre&gt;&#x27; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#x27;&lt;/pre&gt;&#x27; );</span><br><span class="line"></span><br><span class="line">    //mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
-<p>####原理解析<br>攻击者提交留言<code>&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code>后，XSS代码被保存在 数据库中，如下图所示。<br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220720102803485-2027202148.png"><br>并且立即执行了一次查询，XSS代码直接被触发。<br>当其他用户访问网页时，服务端都将从<strong>数据库</strong>中查询到该XSS代码，触发执行，从而被盗取cookie（sessionid）等信息。</p>
-<p>###3、DOM XSS</p>
-
+<h4 id="原理解析-1"><a href="#原理解析-1" class="headerlink" title="原理解析"></a>原理解析</h4><p>攻击者提交留言<code>&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code>后，XSS代码被保存在 数据库中，如下图所示。<br><img src="https://img2022.cnblogs.com/blog/2933309/202207/2933309-20220720102803485-2027202148.png"><br>并且立即执行了一次查询，XSS代码直接被触发。<br>当其他用户访问网页时，服务端都将从<strong>数据库</strong>中查询到该XSS代码，触发执行，从而被盗取cookie（sessionid）等信息。</p>
+<h3 id="3、DOM-XSS"><a href="#3、DOM-XSS" class="headerlink" title="3、DOM XSS"></a>3、DOM XSS</h3>
         </div>
 
         

