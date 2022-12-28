@@ -12,7 +12,7 @@
 
 
 
-<title>XSS跨站脚本攻击 | Stuuupid&#39;s Blog</title>
+<title>Category: wp-CTF-web | Stuuupid&#39;s Blog</title>
 
 
 
@@ -408,257 +408,33 @@
     }
 </script>
         <div class="main">
-            <div class="container">
+            
+
+
+    
+<div class="container">
+    <div class="post-wrap categories">
+        <h2 class="post-title">-&nbsp;Categories&nbsp;·&nbsp;wp-CTF-web-</h2>
+    </div>
+    <div class="post-wrap archive">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
+    
+        
+        
+            
+            
+                <h3>2022</h3>
+            
+            <article class="archive-item">
+                <a class="archive-item-link" href="/2022/12/27/2022Dest0g3-520%E8%BF%8E%E6%96%B0%E8%B5%9B-web-%E9%83%A8%E5%88%86/">2022Dest0g3-520迎新赛-web(部分)</a>
+                <span class="archive-item-date">December 27, 2022</span>
+            </article>
+        
+        
+    
+  
 </div>
-
-<script>
-    document.ready(
-        function () {
-            tocbot.init({
-                tocSelector: '.tocbot-list',
-                contentSelector: '.post-content',
-                headingSelector: 'h1, h2, h3, h4, h5',
-                collapseDepth: 1,
-                orderedList: false,
-                scrollSmooth: true,
-            })
-        }
-    )
-
-    function expand_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 6,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "collapse_toc()");
-        b.innerHTML = "Collapse all"
-    }
-
-    function collapse_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 1,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "expand_toc()");
-        b.innerHTML = "Expand all"
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-</script>
-    
-
-    
-    <article class="post-wrap">
-        <header class="post-header">
-            <h1 class="post-title">XSS跨站脚本攻击</h1>
-            
-                <div class="post-meta">
-                    
-                        Author: <a itemprop="author" rel="author" href="/">Ex1Le23</a>
-                    
-
-                    
-                        <span class="post-time">
-                        Date: <a href="#">December 24, 2022&nbsp;&nbsp;19:26:51</a>
-                        </span>
-                    
-                    
-                        <span class="post-category">
-                    Category:
-                            
-                                <a href="/categories/%E6%B8%97%E9%80%8F%EF%BC%9A%E4%BB%8E0%E5%88%B01/">渗透：从0到1</a>
-                            
-                        </span>
-                    
-                    
-                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-<span class="site-pv">
-    总访问量:
-    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>
-</span>
-
-                    
-                </div>
-            
-        </header>
-
-        <div class="post-content">
-            <h1 id="XSS-基础"><a href="#XSS-基础" class="headerlink" title="XSS 基础"></a>XSS 基础</h1><h2 id="XSS-简介和原理"><a href="#XSS-简介和原理" class="headerlink" title="XSS 简介和原理"></a>XSS 简介和原理</h2><p>XSS（Cross Site Scripting 跨站脚本攻击），指恶意攻击者通过向网站插入恶意payload或恶意脚本，从而盗取cookie、session信息以利用用户身份进行违规操作、盗取用户资料等等。</p>
-<p>其原理是攻击者在网页中嵌入客户端脚本（通常是JavaScript的恶意脚本），当用户使用浏览器加载<strong>被嵌入恶意代码的网页</strong>时，恶意脚本代码就会在<strong>用户的浏览器</strong>执行，造成跨站脚本攻击。</p>
-<h2 id="XSS-危害"><a href="#XSS-危害" class="headerlink" title="XSS 危害"></a>XSS 危害</h2><p>跨站脚本攻击可能会产生盗取（挟持）Cookie、网络钓鱼、植马挖矿、刷流量、劫持后台、篡改页面、内网扫描、制造蠕虫等。</p>
-<img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/harm.png" class="" title="XSS危害">
-
-<h2 id="常出现的场景"><a href="#常出现的场景" class="headerlink" title="常出现的场景"></a>常出现的场景</h2><ul>
-<li>重灾区：评论区、留言区、个人信息、订单信息等</li>
-<li>针对性区域：站内信、网页即时通讯、私信、意见反馈等</li>
-<li>存在风险：搜索框、当前目录、图片属性等</li>
-</ul>
-<h1 id="XSS-类型"><a href="#XSS-类型" class="headerlink" title="XSS 类型"></a>XSS 类型</h1><h2 id="反射型-XSS"><a href="#反射型-XSS" class="headerlink" title="反射型 XSS"></a>反射型 XSS</h2><p>网站对于用户提交的数据没有进行过滤或转义操作（或者过滤、转义不足），导致攻击者嵌入的恶意代码被提交给服务端，服务端解析后，在相应内容中返回输入的XSS代码，最终由浏览器解释执行。</p>
-<ul>
-<li>反射型XSS 是<strong>非持久性、参数性</strong>的跨站脚本，恶意代码并<strong>没有保存</strong>在目标网站，而是通过引诱用户点击一个<strong>链接到目标网站的恶意链接</strong>来实施攻击。</li>
-<li>出现场景：多出现在搜索框或输入框</li>
-</ul>
-<p>原型如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo &#x27;your input:&#x27; . $_GET[&#x27;input&#x27;];</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>若input为<code>&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code><br>且input值未经任何过滤便直接输出，则服务端解析后，echo语句会将客户端输入的代码<strong>完整地输出到HTTP响应中，浏览器解析并执行</strong>，从而实现弹窗。<br>当然，攻击者可以直接以此构造url，当用户受惑点击该url链接，攻击就发生了。</p>
-<h3 id="反射型XSS-利用流程"><a href="#反射型XSS-利用流程" class="headerlink" title="反射型XSS 利用流程"></a>反射型XSS 利用流程</h3><img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/re.png" class="" title="反射型XSS利用原理">
-
-<h2 id="存储型-XSS"><a href="#存储型-XSS" class="headerlink" title="存储型 XSS"></a>存储型 XSS</h2><p>反射型XSS每次皆需要用户提交代码（也即“点击”）才能进行攻击。而存储型XSS提交的XSS代码会<strong>存储在服务器端</strong>，下次请求该网页时无需再次提交XSS代码。常见的应用场景有留言板、在线聊天室、邮件服务或黑客的嵌入恶意JavaScript代码的博客文章等。</p>
-<p>当攻击者提交包含XSS代码的留言后，服务端会将其<strong>存储在数据库中</strong>，当其他用户访问网页查看留言时，服务端将从数据库中查询已有留言，并将其内容输出在HTTP响应中，由浏览器对包含恶意代码的响应解析并执行。</p>
-<p>原型如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;btnSign&#x27; ] ) ) &#123;</span><br><span class="line">    // Get input</span><br><span class="line">    $message = trim( $_POST[ &#x27;mtxMessage&#x27; ] );</span><br><span class="line">    $name    = trim( $_POST[ &#x27;txtName&#x27; ] );</span><br><span class="line"></span><br><span class="line">    // Sanitize message input</span><br><span class="line">    $message = stripslashes( $message );</span><br><span class="line">    $message = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $message ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Sanitize name input</span><br><span class="line">    $name = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $name ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Update database</span><br><span class="line">    $query  = &quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;$message&#x27;, &#x27;$name&#x27; );&quot;;</span><br><span class="line">    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &#x27;&lt;pre&gt;&#x27; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#x27;&lt;/pre&gt;&#x27; );</span><br><span class="line"></span><br><span class="line">    //mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
-
-<p>攻击者提交留言<code>&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code>后，XSS代码被保存在 数据库中，并且立即执行了一次查询，XSS代码直接被触发。<br>当其他用户访问网页时，服务端都将从<strong>数据库</strong>中查询到该XSS代码，触发执行，从而被盗取cookie（sessionid）等信息。</p>
-<h3 id="存储型XSS-利用流程"><a href="#存储型XSS-利用流程" class="headerlink" title="存储型XSS 利用流程"></a>存储型XSS 利用流程</h3><img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/sd.png" class="" title="存储型XSS利用原理">
-
-<h2 id="DOM-XSS"><a href="#DOM-XSS" class="headerlink" title="DOM XSS"></a>DOM XSS</h2><h3 id="DOM-简介"><a href="#DOM-简介" class="headerlink" title="DOM 简介"></a>DOM 简介</h3><ul>
-<li>DOM，全称Document Object Model(文档对象模型)，是W3C推荐的一种独立于平台和语言的标准，定义了<strong>访问HTML和XML文档的标准</strong>。</li>
-<li>Dom即Window对象下内置的document对象<img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/dom.png" class="" title="dom"></li>
-</ul>
-<p>document对象提供了非常多的操作方式，我们可以通过document对象实现对网页内容的一些操作如文本的修改、属性的修改、元素的获取等。</p>
-<p>与反射型 XSS不同，DOM XSS不需经由服务器的响应、处理</p>
-<img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/DOM1.png" class="" title="DOM原理">
-
-<ul>
-<li>DOM-XSS基于前端做的一些限制和筛选，对当前页面做一些直接化的修改。简单去理解就是输出点在DOM，属于特殊的反射型XSS。</li>
-</ul>
-<p><strong>常见的DOM方法</strong></p>
-<img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/dom2.png" class="" title="DOM方法">
-
-<h3 id="DOM-XSS-利用流程"><a href="#DOM-XSS-利用流程" class="headerlink" title="DOM-XSS 利用流程"></a>DOM-XSS 利用流程</h3><p>其利用与反射型XSS十分相似，不再赘述。但需要注意：由于前端的限制，我们需要在<strong>URL中输入XSS探测脚本</strong>。</p>
-<h2 id="三种类型的比较"><a href="#三种类型的比较" class="headerlink" title="三种类型的比较"></a>三种类型的比较</h2><table>
-<thead>
-<tr>
-<th align="center">XSS类型</th>
-<th align="center">存储型</th>
-<th align="center">反射型</th>
-<th align="center">DOM型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">触发过程</td>
-<td align="center">1、黑客构造XSS脚本<br>2、正常用户访问携带XSS脚本的页面</td>
-<td align="center">正常用户访问携带XSS脚本的URL</td>
-<td align="center">正常用户访问携带XSS脚本的URL</td>
-</tr>
-<tr>
-<td align="center">数据存储</td>
-<td align="center">服务器</td>
-<td align="center">URL</td>
-<td align="center">URL</td>
-</tr>
-<tr>
-<td align="center">谁来输出</td>
-<td align="center">后端Web应用程序</td>
-<td align="center">后端Web应用程序</td>
-<td align="center">前端JavaScript</td>
-</tr>
-<tr>
-<td align="center">输出位置</td>
-<td align="center">HTTP响应中</td>
-<td align="center">HTTP响应中</td>
-<td align="center">动态构造的DOM节点中</td>
-</tr>
-<tr>
-<td align="center">是否持久</td>
-<td align="center">是</td>
-<td align="center">否</td>
-<td align="center">否</td>
-</tr>
-</tbody></table>
-<h1 id="防御手段"><a href="#防御手段" class="headerlink" title="防御手段"></a>防御手段</h1><blockquote>
-<p>对用户的输入进行合理验证</p>
-</blockquote>
-<p>对 <code>(</code>, <code>&lt;</code> , <code>&gt;</code> , <code>&#39;</code> , <code>&quot;</code> 等特殊字符以及 <code>&lt;script&gt;</code>, <code>javascript</code> 等字符串进行过滤</p>
-<blockquote>
-<p>根据数据位置设置恰当的输出编码</p>
-</blockquote>
-<p>根据数据将要至于HTML上下文中的不同位置(HTML标准、HTML属性、<br>Javascript脚本、CSS、URL)，对所有不可信数据进行恰当的输出编码</p>
-<blockquote>
-<p>设置HttpOnly属性</p>
-</blockquote>
-<p>避免攻击者利用XSS属性进行Cookie劫持攻击。</p>
-
-        </div>
-
-        
-            <section class="post-copyright">
-                
-                
-                
-                
-
-            </section>
-        
-        <section class="post-tags">
-            <div>
-                <span>Tag(s):</span>
-                <span class="tag">
-                    
-                    
-                        <a href="/tags/web/"># web</a>
-                    
-                        <a href="/tags/%E6%B8%97%E9%80%8F/"># 渗透</a>
-                    
-                        <a href="/tags/%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E/"># 常见漏洞</a>
-                    
-                        
-                </span>
-            </div>
-            <div class="reward" >
-                
-                    
-
-                
-            </div>
-            <div>
-                <a href="javascript:window.history.back();">back</a>
-                <span>· </span>
-                <a href="/">home</a>
-            </div>
-        </section>
-        <section class="post-nav">
-            
-                <a class="prev" rel="prev" href="/2022/12/27/2022Dest0g3-520%E8%BF%8E%E6%96%B0%E8%B5%9B-web-%E9%83%A8%E5%88%86/">2022Dest0g3-520迎新赛-web(部分)</a>
-            
-            
-            <a class="next" rel="next" href="/2022/12/15/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
-            
-        </section>
-
-        
-
-    </article>
 </div>
 
         </div>

