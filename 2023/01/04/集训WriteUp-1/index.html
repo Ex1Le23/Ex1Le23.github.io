@@ -605,7 +605,7 @@
 <img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/test3-1.png" class="" title="本地测试">
 
 <p>然而，在这里没能实现，并且可以看到<code>|</code>前加了<code>\</code>。</p>
-<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/test3-1.png" class="" title="本地测试">
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/test3-2.png" class="" title="本地测试">
 
 <p>联系T2的<code>escapeshellarg</code>和<code>escapeshellcmd</code>处理，估计这里也用到了这俩，再用引号<code>&#39;</code>试一下，同样变成了<code>\&#39;</code>。因此直接依靠<code>|</code>实现命令拼接就无法实现了。</p>
 <h3 id="上传一句话木马"><a href="#上传一句话木马" class="headerlink" title="上传一句话木马"></a>上传一句话木马</h3><p>借用T2的思路，利用nmap的格式化输出，尝试上传一句话木马:</p>
